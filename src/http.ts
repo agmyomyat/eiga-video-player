@@ -24,6 +24,6 @@ export default function uploadVideo<S extends (ProgressEvent:ProgressEvent)=>voi
                 .catch(function(error){
                         setUploadState(false)
 
-                        console.log("error",error)
+                        throw Error(error)
                 });
 }

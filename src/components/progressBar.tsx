@@ -44,7 +44,7 @@ export default function LinearWithValueLabel({value,cancelRequest,setUploadState
         onClick={() => {
           console.log("cancel function trigger")
           setUploadState(false)
-            cancelRequest.cancel();
+          cancelRequest.cancel();
 
         }}
       >

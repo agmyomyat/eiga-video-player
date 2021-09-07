@@ -4,6 +4,7 @@ import axios, { CancelTokenSource } from 'axios'
 import {ChangeEvent, useEffect,  useRef, useState} from 'react'
 import uploadVideo from '../http';
 import LinearWithValueLabel from '../components/progressBar';
+import {UploadModal} from './uploadModal';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -85,12 +86,17 @@ export const UploadPage:React.FC =() =>{
 	alert("choose a video first")
 	}
 	};
-
+	const uploadProgress = ()=>{
+	return(
+	<LinearWithValueLabel setUploadState={setUploadState} cancelRequest={cancelToken} value={progress}/>
+	)
+	}
+	const UploadModalHOC = UploadModal(uploadProgress)
   return (
 	<div className={classes.root}>
 	<input
 		ref={inputRef}
-		className={classes.input}
+		style={{display: 'none'}}
 		onChange={handleFileChange}
 		type="file"
 		accept= ".mp4"
@@ -112,9 +118,7 @@ export const UploadPage:React.FC =() =>{
 		<Button onClick={_clearFile} variant="contained" color="secondary" >Remove Video</Button>
 		</div>
 	)}
-	{uploadState&&
-	<LinearWithValueLabel setUploadState={setUploadState} cancelRequest={cancelToken} value={progress}/>
-	}
+	<UploadModalHOC handleOpen={setUploadState} handleClose={setUploadState} open={uploadState} />
 	</div>
   )
 }
