@@ -88,7 +88,7 @@ export const UploadPage:React.FC =() =>{
 		type="file"
 		accept= ".mp4"
 	/>
-		{(!source&&!uploadState)&&
+		{!source&&!uploadState&&
 		<Button  onClick={_handleChoose} variant="contained" color="primary" component="span">
 		Upload
 		</Button>
@@ -96,7 +96,6 @@ export const UploadPage:React.FC =() =>{
 	{source && (
 		<div>
 		<video
-		className="VideoInput_video"
 		height='400'
 		width= '400'
 		controls
