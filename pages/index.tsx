@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import axios from 'axios'
 import {ChangeEvent, useEffect,  useRef, useState} from 'react'
 import uploadVideo from '../src/http';
 import LinearWithValueLabel from '../src/components/progressBar';
@@ -21,10 +21,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+const cancelToken= axios.CancelToken.source()
 
 const Home: NextPage = () => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState<number>(0)
   const [video, setVideo] = useState<string|Blob>('')
   const [source, setSource] = useState<string>()
    const classes = useStyles();
@@ -44,8 +45,8 @@ const Home: NextPage = () => {
   function onUploadProgress(event:any){
     setProgress(Math.round((100 * event.loaded) / event.total),)
   }
-  const handleUpload = ()=>{
-    uploadVideo(video,onUploadProgress,"amm")
+  const _handleUpload = ()=>{
+    uploadVideo(video,onUploadProgress,"amm",cancelToken)
     if(inputRef.current){
       inputRef.current.value=""
       setSource('')
@@ -55,14 +56,17 @@ const Home: NextPage = () => {
   }
   useEffect(()=>{
     console.log(source)
+    
   },[source])
-  const handleChoose = () => {
+
+  const _handleChoose = () => {
     if(!inputRef.current){
       throw Error('ref is not assigned')
     }
     inputRef.current.click();
   };
-  const clearFile =()=>{
+
+  const _clearFile =()=>{
     if (inputRef.current){
       inputRef.current.value=''
       setSource('')
@@ -83,7 +87,7 @@ const Home: NextPage = () => {
         accept= ".mp4"
       />
         {!source&&
-        <Button  onClick={handleChoose} variant="contained" color="primary" component="span">
+        <Button  onClick={_handleChoose} variant="contained" color="primary" component="span">
           Upload
         </Button>
         }
@@ -96,12 +100,12 @@ const Home: NextPage = () => {
           controls
           src={source}
         />
-        <Button onClick={handleUpload} variant="contained" color="primary" >upload Video</Button>
-        <Button onClick={clearFile} variant="contained" color="secondary" >Remove Video</Button>
+        <Button onClick={_handleUpload} variant="contained" color="primary" >upload Video</Button>
+        <Button onClick={_clearFile} variant="contained" color="secondary" >Remove Video</Button>
         </div>
       )}
       {progress>0&&
-      <LinearWithValueLabel value={progress}/>
+      <LinearWithValueLabel cancelRequest={cancelToken} value={progress}/>
       }
       </div>
   )
