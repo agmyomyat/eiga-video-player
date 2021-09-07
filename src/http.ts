@@ -1,6 +1,8 @@
 import axios, { CancelTokenSource } from "axios";
-export default function uploadVideo<T,S extends (ProgressEvent:T)=>void>
-(video:string|Blob,onUploadProgress:S,filename:string,CancelRequest:CancelTokenSource){
+import { Dispatch, SetStateAction } from "react";
+
+export default function uploadVideo<S extends (ProgressEvent:ProgressEvent)=>void>
+(video:string|Blob,onUploadProgress:S,filename:string,CancelRequest:CancelTokenSource,setUploadState:Dispatch<SetStateAction<boolean>>){
         // const ourRequest = axios.CancelToken.source()
 	
 	let config = { headers: {
@@ -12,13 +14,16 @@ export default function uploadVideo<T,S extends (ProgressEvent:T)=>void>
 			
 	}
             let url = `https://storage.bunnycdn.com/urnotalone/${filename}.mp4`;
+            setUploadState(true)
 
             axios.put(url, video,config)
                 .then(function(response){
 			alert(response.status)
+                        setUploadState(false)
                 })
                 .catch(function(error){
 		alert(`Error during upload or Request canceled${error}`)
+                setUploadState(false)
 
                 });
 }
