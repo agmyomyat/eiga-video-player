@@ -29,13 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-type ModalProps = {open:boolean, handleOpen:Dispatch<SetStateAction<boolean>>,handleClose:Dispatch<SetStateAction<boolean>>}
+
+type ModalProps = {open:boolean}
+
 export const UploadModal = (Children:React.FC)=>{
 	const classes = useStyles()
 	const [modalStyle] = React.useState(getModalStyle);
 
 
-	return function wrapper({open,handleOpen,handleClose}:ModalProps){ 
+	return function wrapper({open}:ModalProps){ 
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   const body = (
@@ -48,7 +50,6 @@ export const UploadModal = (Children:React.FC)=>{
     <div>
       <Modal
         open={open}
-        onClose={()=>handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
