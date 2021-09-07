@@ -1,14 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useEffect} from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50 
+  const left = 50 
 
   return {
     top: `${top}%`,
@@ -23,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       width: 400,
       backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
@@ -35,9 +30,9 @@ type ModalProps = {open:boolean}
 export const UploadModal = (Children:React.FC)=>{
 	const classes = useStyles()
 	const [modalStyle] = React.useState(getModalStyle);
+ 
 
-
-	return function wrapper({open}:ModalProps){ 
+	return function Wrapper({open}:ModalProps){ 
   // getModalStyle is not a pure function, we roll the style only on the first render
 
   const body = (

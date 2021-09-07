@@ -18,12 +18,13 @@ export default function uploadVideo<S extends (ProgressEvent:ProgressEvent)=>voi
 
             axios.put(url, video,config)
                 .then(function(response){
-			alert(response.status)
+			alert(response.status===201?"Upload Completed":response.status)
                         setUploadState(false)
                 })
                 .catch(function(error){
-                        setUploadState(false)
-
+                       if (axios.isCancel(error)) {
+                       return alert("Request canceled");
+                        } 
                         throw Error(error)
                 });
 }
