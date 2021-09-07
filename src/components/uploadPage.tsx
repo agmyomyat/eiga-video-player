@@ -1,6 +1,6 @@
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import axios from 'axios'
+import axios, { CancelTokenSource } from 'axios'
 import {ChangeEvent, useEffect,  useRef, useState} from 'react'
 import uploadVideo from '../http';
 import LinearWithValueLabel from '../components/progressBar';
@@ -20,13 +20,16 @@ const useStyles = makeStyles((theme: Theme) =>
 	},
 	}),
 	);
-const cancelToken= axios.CancelToken.source()
+
+let cancelToken:CancelTokenSource 
+
 export const UploadPage:React.FC =() =>{
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [progress, setProgress] = useState<number>(0)
 	const [video, setVideo] = useState<string|Blob>('')
 	const [source, setSource] = useState<string>()
 	const [uploadState, setUploadState] = useState<boolean>(false)
+	
 	const classes = useStyles();
 	const handleFileChange = (event:ChangeEvent<HTMLInputElement>) => {
 	if (!inputRef.current||!event.target){
@@ -47,6 +50,10 @@ export const UploadPage:React.FC =() =>{
 	};
 
 	const _handleUpload = ()=>{
+	if(cancelToken){
+	cancelToken.cancel()
+	}
+	cancelToken=axios.CancelToken.source()
 	uploadVideo(video,onUploadProgress,"amm",cancelToken,setUploadState)
 	if(inputRef.current){
 	inputRef.current.value=""
@@ -89,7 +96,7 @@ export const UploadPage:React.FC =() =>{
 		accept= ".mp4"
 	/>
 		{!source&&!uploadState&&
-		<Button  onClick={_handleChoose} variant="contained" color="primary" component="span">
+		<Button  onClick={()=>_handleChoose()} variant="contained" color="primary" component="span">
 		Upload
 		</Button>
 		}
@@ -105,7 +112,7 @@ export const UploadPage:React.FC =() =>{
 		<Button onClick={_clearFile} variant="contained" color="secondary" >Remove Video</Button>
 		</div>
 	)}
-	{progress>0&& uploadState&&
+	{uploadState&&
 	<LinearWithValueLabel setUploadState={setUploadState} cancelRequest={cancelToken} value={progress}/>
 	}
 	</div>

@@ -22,8 +22,8 @@ export default function uploadVideo<S extends (ProgressEvent:ProgressEvent)=>voi
                         setUploadState(false)
                 })
                 .catch(function(error){
-		alert(`Error during upload or Request canceled${error}`)
-                setUploadState(false)
+                        setUploadState(false)
 
+                        console.log("error",error)
                 });
 }
