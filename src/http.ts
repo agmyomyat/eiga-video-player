@@ -7,13 +7,13 @@ export default function uploadVideo<S extends (ProgressEvent:ProgressEvent)=>voi
 	
 	let config = { headers: {
                     'Content-Type': 'application/octet-stream',
-		    'AccessKey':'21819e58-006b-43c9-abcef04139ad-6b07-4469'
+		    'AccessKey':'12ab3bfc-aa6f-429e-b7c678fd7058-5596-4949'
                 },
 		onUploadProgress,
                 cancelToken: CancelRequest.token
 			
 	}
-            let url = `https://storage.bunnycdn.com/urnotalone/${filename}.mp4`;
+            let url = `https://storage.bunnycdn.com/apidevurn/${filename}.mp4`;
             setUploadState(true)
 
             axios.put(url, video,config)

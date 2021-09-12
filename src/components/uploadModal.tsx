@@ -1,10 +1,10 @@
-import React, { useEffect} from 'react';
+import React  from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 function getModalStyle() {
   const top = 50 
-  const left = 50 
+  const left = 50
 
   return {
     top: `${top}%`,
@@ -30,10 +30,10 @@ type ModalProps = {open:boolean}
 export const UploadModal = (Children:React.FC)=>{
 	const classes = useStyles()
 	const [modalStyle] = React.useState(getModalStyle);
+  // getModalStyle is not a pure function, we roll the style only on the first render
  
 
 	return function Wrapper({open}:ModalProps){ 
-  // getModalStyle is not a pure function, we roll the style only on the first render
 
   const body = (
     <div style={modalStyle} className={classes.paper}>

@@ -5,6 +5,7 @@ import {ChangeEvent, useEffect,  useRef, useState} from 'react'
 import uploadVideo from '../http';
 import LinearWithValueLabel from '../components/progressBar';
 import {UploadModal} from './uploadModal';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -107,18 +108,18 @@ export const UploadPage:React.FC =() =>{
 		</Button>
 		}
 	{source && (
-		<div>
+		<Container  maxWidth="md">
 		<video
-		height='400'
-		width= '400'
+		height="100%"
+		width="100%"
 		controls
 		src={source}
 		/>
 		<Button onClick={_handleUpload} variant="contained" color="primary" >upload Video</Button>
 		<Button onClick={_clearFile} variant="contained" color="secondary" >Remove Video</Button>
-		</div>
+		</Container>
 	)}
-	<UploadModalHOC handleOpen={setUploadState} handleClose={setUploadState} open={uploadState} />
+	<UploadModalHOC  open={uploadState} />
 	</div>
   )
 }
