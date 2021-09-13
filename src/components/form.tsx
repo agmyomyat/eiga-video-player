@@ -4,44 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { Formik, Form, Field, ErrorMessage, FormikValues } from "formik";
 import { formSchema } from "../helpers/formValidation";
-import {
-	Box,
-	Button,
-	Container,
-	createStyles,
-	Divider,
-	makeStyles,
-	Theme,
-	Tooltip,
-} from "@material-ui/core";
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			width: "100%",
-			maxWidth: 360,
-			backgroundColor: theme.palette.background.paper,
-		},
-		chip: {
-			margin: theme.spacing(0.5),
-		},
-		section1: {
-			margin: theme.spacing(3, -3),
-		},
-		buttonPadding: {
-			margin: 2,
-		},
-		section3: {
-			padding: theme.spacing(3, 3, 1),
-		},
-		tootips: {
-			backgroundColor: "red",
-			margin: 1,
-		},
-		customArrow: {
-			color: "red",
-		},
-	})
-);
+import { Button, Container, Tooltip } from "@material-ui/core";
+import { formStyles } from "../material-ui/styles/form";
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
@@ -58,8 +22,7 @@ export default function AddressForm({
 	handleFileChange,
 	inputRef,
 }: FormProp) {
-	const classes = useStyles();
-
+	const classes = formStyles();
 	return (
 		<React.Fragment>
 			<Typography variant="h6" gutterBottom>
