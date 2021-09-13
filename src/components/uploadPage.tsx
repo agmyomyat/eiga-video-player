@@ -6,6 +6,7 @@ import uploadVideo from "../http";
 import LinearWithValueLabel from "../components/progressBar";
 import { UploadModal } from "./uploadModal";
 import { Container } from "@material-ui/core";
+import SignIn from "./form";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		root: {
 			"& > *": {
 				margin: theme.spacing(1),
+				padding: theme.spacing(1),
 			},
 		},
 		input: {
@@ -104,16 +106,17 @@ export const UploadPage: React.FC = () => {
 				type="file"
 				accept=".mp4"
 			/>
-			{!source && !uploadState && (
+			<Container>
+				<SignIn />
 				<Button
 					onClick={() => _handleChoose()}
 					variant="contained"
 					color="primary"
 					component="span"
 				>
-					Upload
+					Choose A File
 				</Button>
-			)}
+			</Container>
 			{source && (
 				<Container maxWidth="md">
 					<video height="100%" width="100%" controls src={source} />
