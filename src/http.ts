@@ -1,12 +1,11 @@
 import axios, { CancelTokenSource } from "axios";
 import { Dispatch, SetStateAction } from "react";
 
-export default function uploadVideo<S extends (ProgressEvent: ProgressEvent) => void>(
+export default async function uploadVideo<S extends (ProgressEvent: ProgressEvent) => void>(
 	video: string | Blob,
 	onUploadProgress: S,
 	filename: string,
-	CancelRequest: CancelTokenSource,
-	setUploadState: Dispatch<SetStateAction<boolean>>
+	CancelRequest: CancelTokenSource
 ) {
 	// const ourRequest = axios.CancelToken.source()
 
@@ -22,18 +21,15 @@ export default function uploadVideo<S extends (ProgressEvent: ProgressEvent) => 
 	if (!video) {
 		return;
 	}
-	setUploadState(true);
-
-	axios
-		.put(url, video, config)
-		.then(function (response) {
-			alert(response.status === 201 ? "Upload Completed" : response.status);
-			setUploadState(false);
-		})
-		.catch(function (error) {
-			if (axios.isCancel(error)) {
-				return alert("Request canceled");
-			}
-			throw Error(error);
-		});
+	return axios.put(url, video, config);
+	// .then(function (response) {
+	// 	alert(response.status === 201 ? "Upload Completed" : response.status);
+	// 	setUploadState(false);
+	// })
+	// .catch(function (error) {
+	// 	if (axios.isCancel(error)) {
+	// 		return alert("Request canceled");
+	// 	}
+	// 	throw Error(error);
+	// });
 }

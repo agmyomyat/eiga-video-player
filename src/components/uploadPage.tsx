@@ -1,5 +1,4 @@
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import axios, { CancelTokenSource } from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import uploadVideo from "../http";
@@ -54,20 +53,19 @@ export const UploadPage: React.FC = () => {
 	function onUploadProgress(event: ProgressEvent) {
 		setProgress(Math.round((100 * event.loaded) / event.total));
 	}
-
-	const _handleUpload = () => {
+	async function _handleUpload({ fileName }: { fileName: string }) {
 		if (cancelToken) {
 			cancelToken.cancel();
 		}
 		cancelToken = axios.CancelToken.source();
-		uploadVideo(video, onUploadProgress, "amm", cancelToken, setUploadState);
 		if (inputRef.current) {
 			inputRef.current.value = "";
 			setSource("");
 		} else {
 			throw Error("inputRef value not found(its not supposed to be empty)");
 		}
-	};
+		return uploadVideo(video, onUploadProgress, fileName, cancelToken);
+	}
 
 	useEffect(() => {
 		console.log(source);
@@ -106,9 +104,10 @@ export const UploadPage: React.FC = () => {
 					handleFileChange={handleFileChange}
 					inputRef={inputRef}
 					handleChoose={_handleChoose}
-					handleUpload={_handleUpload}
 					source={source}
 					clearFile={_clearFile}
+					handleUpload={_handleUpload}
+					setUploadState={setUploadState}
 				/>
 			</Container>
 

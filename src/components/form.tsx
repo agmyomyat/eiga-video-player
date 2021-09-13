@@ -1,28 +1,34 @@
-import React, { ChangeEvent, Dispatch, RefObject, SetStateAction } from "react";
+import React, { ChangeEvent, Dispatch, RefObject, SetStateAction, useState } from "react";
+import { uuid } from "../helpers/uuid";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import { Formik, Form, Field, ErrorMessage, FormikValues } from "formik";
+import { Formik, Form } from "formik";
 import { formSchema } from "../helpers/formValidation";
 import { Button, Container, Tooltip } from "@material-ui/core";
 import { formStyles } from "../material-ui/styles/form";
+import UploadFailModal from "../material-ui/uploadFailModal";
+import axios, { AxiosResponse } from "axios";
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
-	handleUpload: T;
 	clearFile: T;
 	handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+	handleUpload: ({ fileName }: { fileName: string }) => Promise<AxiosResponse<any> | undefined>;
 	inputRef: RefObject<HTMLInputElement>;
+	setUploadState: Dispatch<SetStateAction<boolean>>;
 };
 export default function AddressForm({
 	handleChoose,
 	source,
-	handleUpload,
 	clearFile,
+	handleUpload,
 	handleFileChange,
 	inputRef,
+	setUploadState,
 }: FormProp) {
 	const classes = formStyles();
+	const [modalMessage, setModalMessage] = useState<string>("");
 	return (
 		<React.Fragment>
 			<Typography variant="h6" gutterBottom>
@@ -31,8 +37,26 @@ export default function AddressForm({
 			<Formik
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
-				onSubmit={(values, { resetForm, setSubmitting }) => {
-					handleUpload();
+				onSubmit={async (values, { resetForm, setSubmitting }) => {
+					setUploadState(true);
+					try {
+						const _uuid = uuid();
+						const response = await handleUpload({ fileName: _uuid });
+						if (response!.status === 201) {
+							alert(_uuid);
+							setModalMessage("upload completed");
+							setUploadState(false);
+						}
+						console.log(response);
+					} catch (e: any) {
+						if (axios.isCancel(e)) {
+							setUploadState(false);
+							return setModalMessage("Request canceled");
+						}
+						resetForm({});
+						setUploadState(false);
+						return setModalMessage(e.message);
+					}
 					resetForm({});
 
 					setSubmitting(false);
@@ -157,6 +181,10 @@ export default function AddressForm({
 									</Container>
 								)}
 							</Grid>
+							<UploadFailModal
+								message={modalMessage}
+								handleClose={() => setModalMessage("")}
+							/>
 						</div>
 					</Form>
 				)}
