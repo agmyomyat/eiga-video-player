@@ -19,6 +19,9 @@ export default function uploadVideo<S extends (ProgressEvent: ProgressEvent) => 
 		cancelToken: CancelRequest.token,
 	};
 	let url = `https://storage.bunnycdn.com/apidevurn/${filename}.mp4`;
+	if (!video) {
+		return;
+	}
 	setUploadState(true);
 
 	axios

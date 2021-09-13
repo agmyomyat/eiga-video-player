@@ -6,7 +6,7 @@ import uploadVideo from "../http";
 import LinearWithValueLabel from "../components/progressBar";
 import { UploadModal } from "./uploadModal";
 import { Container } from "@material-ui/core";
-import SignIn from "./form";
+import AddressForm from "./form";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -31,7 +31,7 @@ export const UploadPage: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [progress, setProgress] = useState<number>(0);
 	const [video, setVideo] = useState<string | Blob>("");
-	const [source, setSource] = useState<string>();
+	const [source, setSource] = useState<string>("");
 	const [uploadState, setUploadState] = useState<boolean>(false);
 
 	const classes = useStyles();
@@ -39,7 +39,9 @@ export const UploadPage: React.FC = () => {
 		if (!inputRef.current || !event.target) {
 			throw Error("ref is not assigned");
 		}
+		console.log("file", event.target.files);
 
+		if (!event.target.files?.length) return;
 		if (event.target.files?.length !== 0) {
 			const file = event.target.files![0];
 			setVideo((event.target.files && event.target.files[0]) || "");
@@ -99,35 +101,17 @@ export const UploadPage: React.FC = () => {
 	const UploadModalHOC = UploadModal(uploadProgress);
 	return (
 		<div className={classes.root}>
-			<input
-				ref={inputRef}
-				style={{ display: "none" }}
-				onChange={handleFileChange}
-				type="file"
-				accept=".mp4"
-			/>
 			<Container>
-				<SignIn />
-				<Button
-					onClick={() => _handleChoose()}
-					variant="contained"
-					color="primary"
-					component="span"
-				>
-					Choose A File
-				</Button>
+				<AddressForm
+					handleFileChange={handleFileChange}
+					inputRef={inputRef}
+					handleChoose={_handleChoose}
+					handleUpload={_handleUpload}
+					source={source}
+					clearFile={_clearFile}
+				/>
 			</Container>
-			{source && (
-				<Container maxWidth="md">
-					<video height="100%" width="100%" controls src={source} />
-					<Button onClick={_handleUpload} variant="contained" color="primary">
-						upload Video
-					</Button>
-					<Button onClick={_clearFile} variant="contained" color="secondary">
-						Remove Video
-					</Button>
-				</Container>
-			)}
+
 			<UploadModalHOC open={uploadState} />
 		</div>
 	);
