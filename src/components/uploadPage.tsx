@@ -5,7 +5,7 @@ import uploadVideo from "../http";
 import LinearWithValueLabel from "../components/progressBar";
 import { UploadModal } from "./uploadModal";
 import { Container } from "@material-ui/core";
-import AddressForm from "./form";
+import UploadForm from "./form";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -100,7 +100,7 @@ export const UploadPage: React.FC = () => {
 	return (
 		<div className={classes.root}>
 			<Container>
-				<AddressForm
+				<UploadForm
 					handleFileChange={handleFileChange}
 					inputRef={inputRef}
 					handleChoose={_handleChoose}

@@ -18,7 +18,7 @@ type FormProp<T = () => void> = {
 	inputRef: RefObject<HTMLInputElement>;
 	setUploadState: Dispatch<SetStateAction<boolean>>;
 };
-export default function AddressForm({
+export default function UploadForm({
 	handleChoose,
 	source,
 	clearFile,
