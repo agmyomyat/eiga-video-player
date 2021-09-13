@@ -68,11 +68,11 @@ export default function AddressForm({
 			<Formik
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
-				onSubmit={(values, { setSubmitting }) => {
-					setTimeout(() => {
-						alert(JSON.stringify(values, null, 2));
-						setSubmitting(false);
-					}, 400);
+				onSubmit={(values, { resetForm, setSubmitting }) => {
+					handleUpload();
+					resetForm({});
+
+					setSubmitting(false);
 				}}
 			>
 				{({
@@ -151,9 +151,9 @@ export default function AddressForm({
 									</Button>
 								</Tooltip>
 								<Button
+									type="submit"
 									className={classes.buttonPadding}
 									size="small"
-									onClick={handleUpload}
 									variant="contained"
 									color="primary"
 								>
@@ -195,7 +195,6 @@ export default function AddressForm({
 								)}
 							</Grid>
 						</div>
-						<Button type="submit">Click</Button>
 					</Form>
 				)}
 			</Formik>

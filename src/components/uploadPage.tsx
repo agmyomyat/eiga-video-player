@@ -41,7 +41,7 @@ export const UploadPage: React.FC = () => {
 		}
 		console.log("file", event.target.files);
 
-		if (!event.target.files?.length) return;
+		if (!event.target.files?.length) return setVideo("");
 		if (event.target.files?.length !== 0) {
 			const file = event.target.files![0];
 			setVideo((event.target.files && event.target.files[0]) || "");

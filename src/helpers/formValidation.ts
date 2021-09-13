@@ -5,15 +5,15 @@ export const formSchema = Yup.object().shape({
 	episode: Yup.number().typeError("episode must be a number"),
 	file: Yup.mixed()
 		.required("Choose A Video")
-		.test("is-correct-file", "File Must Be Mp4", checkIfFilesAreTooBig)
-		.test("is-big-file", "File Too Big Cannot be More Than 3-GB", checkIfFilesAreCorrectType),
+		.test("is-correct-file", "File too big Must not be more than 3-GB", checkIfFilesAreTooBig)
+		.test("is-big-file", "File Must Be Mp4", checkIfFilesAreCorrectType),
 });
 export function checkIfFilesAreTooBig(files?: File[] | null): boolean {
 	let valid = true;
 	console.log("filevalid", files);
 	if (files) {
-		const size = files[0].size / 1024 / 1024 / 1024;
-		if (size > 3) {
+		const size = files[0].size / 1024 / 1024;
+		if (size > 3000) {
 			valid = false;
 		}
 	}
