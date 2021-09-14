@@ -28,6 +28,7 @@ let cancelToken: CancelTokenSource;
 
 export const UploadPage: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
+	const videoName = useRef<string>("");
 	const [progress, setProgress] = useState<number>(0);
 	const [video, setVideo] = useState<string | Blob>("");
 	const [source, setSource] = useState<string>("");
@@ -39,10 +40,12 @@ export const UploadPage: React.FC = () => {
 			throw Error("ref is not assigned");
 		}
 		console.log("file", event.target.files);
+		console.log("refFile", inputRef.current.files![0].name);
 
 		if (!event.target.files?.length) return setVideo("");
 		if (event.target.files?.length !== 0) {
 			const file = event.target.files![0];
+			videoName.current = file.name;
 			setVideo((event.target.files && event.target.files[0]) || "");
 			const url = URL.createObjectURL(file);
 			setSource(url);
@@ -51,7 +54,7 @@ export const UploadPage: React.FC = () => {
 	};
 
 	function onUploadProgress(event: ProgressEvent) {
-		setProgress(Math.round((100 * event.loaded) / event.total));
+		setProgress(Math.round((99 * event.loaded) / event.total));
 	}
 	async function _handleUpload({ fileName }: { fileName: string }) {
 		if (cancelToken) {
@@ -90,6 +93,7 @@ export const UploadPage: React.FC = () => {
 	const uploadProgress = () => {
 		return (
 			<LinearWithValueLabel
+				fileName={videoName.current}
 				setUploadState={setUploadState}
 				cancelRequest={cancelToken}
 				value={progress}

@@ -46,18 +46,21 @@ export default function UploadForm({
 							alert(_uuid);
 							setModalMessage("upload completed");
 							setUploadState(false);
+							resetForm({});
 						}
+						setUploadState(false);
+						resetForm({});
 						console.log(response);
 					} catch (e: any) {
 						if (axios.isCancel(e)) {
 							setUploadState(false);
+							resetForm({});
 							return setModalMessage("Request canceled");
 						}
 						resetForm({});
 						setUploadState(false);
 						return setModalMessage(e.message);
 					}
-					resetForm({});
 
 					setSubmitting(false);
 				}}
@@ -181,10 +184,7 @@ export default function UploadForm({
 									</Container>
 								)}
 							</Grid>
-							<UploadFailModal
-								message={modalMessage}
-								handleClose={() => setModalMessage("")}
-							/>
+							<UploadFailModal message={modalMessage} handleClose={() => setModalMessage("")} />
 						</div>
 					</Form>
 				)}

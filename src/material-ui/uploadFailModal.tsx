@@ -12,11 +12,11 @@ import {
 type ModalProp = { message: string; handleClose: () => void };
 export default function UploadFailModal({ handleClose, message }: ModalProp) {
 	const theme = useTheme();
-	const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+	const fullWidth = useMediaQuery(theme.breakpoints.down("sm"));
 	return (
 		<div>
 			<Dialog
-				fullScreen={fullScreen}
+				fullWidth={fullWidth}
 				open={!!message}
 				onClose={handleClose}
 				aria-labelledby="responsive-dialog-title"

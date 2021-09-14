@@ -28,11 +28,17 @@ const useStyles = makeStyles({
 	},
 });
 type Progress = {
+	fileName: string;
 	value: number;
 	cancelRequest: CancelTokenSource;
 	setUploadState: Dispatch<SetStateAction<boolean>>;
 };
-export default function LinearWithValueLabel({ value, cancelRequest, setUploadState }: Progress) {
+export default function LinearWithValueLabel({
+	fileName,
+	value,
+	cancelRequest,
+	setUploadState,
+}: Progress) {
 	useEffect(() => {
 		return () => console.log("unmounted");
 	}, []);
@@ -40,7 +46,8 @@ export default function LinearWithValueLabel({ value, cancelRequest, setUploadSt
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<p>Uploading file.This will auto close after finished.You might wanna grab a coffee</p>
+			<p>Uploading {fileName}.</p>
+			<p>This will auto close after finished.You might wanna grab a coffee</p>
 			<LinearProgressWithLabel value={value} />
 			<Button
 				variant="contained"
