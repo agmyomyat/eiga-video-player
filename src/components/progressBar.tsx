@@ -4,8 +4,9 @@ import { LinearProgressProps } from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { CancelTokenSource } from "axios";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { BorderLinearProgress } from "../material-ui/BoderLinearProgress";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
 	return (
@@ -46,6 +47,7 @@ export default function LinearWithValueLabel({
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
+			<CloudUploadIcon />
 			<p>Uploading {fileName}.</p>
 			<p>This will auto close after finished.You might wanna grab a coffee</p>
 			<LinearProgressWithLabel value={value} />
