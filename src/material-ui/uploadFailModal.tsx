@@ -8,11 +8,11 @@ import {
 	Button,
 	useMediaQuery,
 	useTheme,
-} from "@material-ui/core";
+} from "@mui/material";
 type ModalProp = { message: string; handleClose: () => void };
 export default function UploadFailModal({ handleClose, message }: ModalProp) {
 	const theme = useTheme();
-	const fullWidth = useMediaQuery(theme.breakpoints.down("sm"));
+	const fullWidth = useMediaQuery(theme.breakpoints.down('md'));
 	return (
 		<div>
 			<Dialog

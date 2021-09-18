@@ -1,11 +1,11 @@
 import React, { ChangeEvent, Dispatch, RefObject, SetStateAction, useState } from "react";
 import { uuid } from "../helpers/uuid";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 import { Formik, Form } from "formik";
 import { formSchema } from "../helpers/formValidation";
-import { Button, Container, Tooltip } from "@material-ui/core";
+import { Box, Button, Container, Tooltip } from "@mui/material";
 import { formStyles } from "../material-ui/styles/form";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
@@ -27,7 +27,6 @@ export default function UploadForm({
 	inputRef,
 	setUploadState,
 }: FormProp) {
-	const classes = formStyles();
 	const [modalMessage, setModalMessage] = useState<string>("");
 	return (
 		<React.Fragment>
@@ -76,8 +75,12 @@ export default function UploadForm({
 					setFieldValue,
 					/* and other goodies */
 				}) => (
-					<Form onSubmit={handleSubmit}>
-						<Grid container spacing={3}>
+					<form onSubmit={handleSubmit}>
+						<Grid
+							sx={{ width: "100%", maxWidth: 360, "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+							container
+							spacing={3}
+						>
 							<Grid item xs={12} sm={3}>
 								<TextField
 									value={values.movieName}
@@ -92,6 +95,7 @@ export default function UploadForm({
 									autoComplete="given-name"
 									error={!!errors.movieName}
 									helperText={errors.movieName}
+									variant="standard"
 								/>
 							</Grid>
 							<Grid item xs={12} sm={2}>
@@ -119,18 +123,22 @@ export default function UploadForm({
 								/>
 							</Grid>
 
-							<Grid item xs={12}>
-								<Tooltip
-									classes={{
-										tooltip: classes.tootips,
-										arrow: classes.customArrow,
-									}}
-									arrow
-									title={errors.file || ""}
-									open={!!errors.file}
-								>
+							<Grid
+								sx={{
+									"& .MuiTooltip-tooltip": {
+										bgcolor: "red",
+										margin: 1,
+									},
+									"& .MuiTooltip-arrow": {
+										color: "red",
+									},
+								}}
+								item
+								xs={12}
+							>
+								<Tooltip arrow title={errors.file || ""} open={!!errors.file}>
 									<Button
-										className={classes.buttonPadding}
+										sx={{ m: 2 }}
 										size="small"
 										onClick={() => handleChoose()}
 										variant="contained"
@@ -142,7 +150,7 @@ export default function UploadForm({
 								</Tooltip>
 								<Button
 									type="submit"
-									className={classes.buttonPadding}
+									sx={{ m: 2 }}
 									size="small"
 									variant="contained"
 									color="primary"
@@ -150,7 +158,7 @@ export default function UploadForm({
 									upload Video
 								</Button>
 								<Button
-									className={classes.buttonPadding}
+									sx={{ m: 2 }}
 									size="small"
 									onClick={() => {
 										setFieldValue("file", null);
@@ -163,7 +171,7 @@ export default function UploadForm({
 								</Button>
 							</Grid>
 						</Grid>
-						<div className={classes.section1}>
+						<Box sx={{ my: 3, mx: -3 }}>
 							<input
 								id="file"
 								name="file"
@@ -185,8 +193,8 @@ export default function UploadForm({
 								)}
 							</Grid>
 							<UploadFailModal message={modalMessage} handleClose={() => setModalMessage("")} />
-						</div>
-					</Form>
+						</Box>
+					</form>
 				)}
 			</Formik>
 			;
