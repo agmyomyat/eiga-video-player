@@ -1,28 +1,10 @@
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import axios, { CancelTokenSource } from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import uploadVideo from "../http";
 import LinearWithValueLabel from "../components/progressBar";
 import { UploadModal } from "./uploadModal";
-import { Container } from "@material-ui/core";
+import { styled } from "@mui/material";
 import UploadForm from "./form";
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		progress: {
-			width: "100%",
-		},
-		root: {
-			"& > *": {
-				margin: theme.spacing(1),
-				padding: theme.spacing(1),
-			},
-		},
-		input: {
-			display: "none",
-		},
-	})
-);
 
 let cancelToken: CancelTokenSource;
 
@@ -34,7 +16,6 @@ export const UploadPage: React.FC = () => {
 	const [source, setSource] = useState<string>("");
 	const [uploadState, setUploadState] = useState<boolean>(false);
 
-	const classes = useStyles();
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!inputRef.current || !event.target) {
 			throw Error("ref is not assigned");
@@ -102,20 +83,31 @@ export const UploadPage: React.FC = () => {
 	};
 	const UploadModalHOC = UploadModal(uploadProgress);
 	return (
-		<div className={classes.root}>
-			<Container>
-				<UploadForm
-					handleFileChange={handleFileChange}
-					inputRef={inputRef}
-					handleChoose={_handleChoose}
-					source={source}
-					clearFile={_clearFile}
-					handleUpload={_handleUpload}
-					setUploadState={setUploadState}
-				/>
-			</Container>
+		<HOCDiv>
+			{/* <Container> */}
+			<UploadForm
+				handleFileChange={handleFileChange}
+				inputRef={inputRef}
+				handleChoose={_handleChoose}
+				source={source}
+				clearFile={_clearFile}
+				handleUpload={_handleUpload}
+				setUploadState={setUploadState}
+			/>
+			{/* </Container> */}
 
 			<UploadModalHOC open={uploadState} />
-		</div>
+		</HOCDiv>
 	);
 };
+const HOCDiv = styled("div")(({ theme }) => ({
+	progress: {
+		width: "100%",
+	},
+	root: {
+		"& > *": {
+			margin: theme.spacing(1),
+			padding: theme.spacing(1),
+		},
+	},
+}));

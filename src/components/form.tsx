@@ -1,15 +1,15 @@
 import React, { ChangeEvent, Dispatch, RefObject, SetStateAction, useState } from "react";
 import { uuid } from "../helpers/uuid";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import { Formik, Form } from "formik";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import { Form, Formik, useFormik } from "formik";
 import { formSchema } from "../helpers/formValidation";
-import { Button, Container, Tooltip } from "@material-ui/core";
-import { formStyles } from "../material-ui/styles/form";
+import { Box, Button, Container, Link, Paper, Tooltip } from "@mui/material";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
 import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
+import { Copyright } from "@mui/icons-material";
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
@@ -28,13 +28,9 @@ export default function UploadForm({
 	inputRef,
 	setUploadState,
 }: FormProp) {
-	const classes = formStyles();
 	const [modalMessage, setModalMessage] = useState<string>("");
 	return (
 		<React.Fragment>
-			<Typography variant="h6" gutterBottom>
-				Fill Movie Infos
-			</Typography>
 			<Formik
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
@@ -103,120 +99,132 @@ export default function UploadForm({
 					setFieldValue,
 					/* and other goodies */
 				}) => (
-					<Form onSubmit={handleSubmit}>
-						<Grid container spacing={3}>
-							<Grid item xs={12} sm={3}>
-								<TextField
-									value={values.movieName}
-									onChange={(e) => {
-										handleChange(e);
+					<>
+						<Grid container component="main" sx={{ height: "100vh" }}>
+							<Grid
+								item
+								xs={false}
+								sm={4}
+								md={7}
+								sx={{
+									backgroundImage: "url(https://source.unsplash.com/random)",
+									backgroundRepeat: "no-repeat",
+									backgroundColor: (t) =>
+										t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
+									backgroundSize: "cover",
+									backgroundPosition: "center",
+								}}
+							/>
+							<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+								<Box
+									sx={{
+										my: 8,
+										mx: 4,
+										display: "flex",
+										flexDirection: "column",
+										alignItems: "center",
 									}}
-									required
-									id="movieName"
-									name="movieName"
-									label="Movie Name"
-									fullWidth
-									autoComplete="given-name"
-									error={!!errors.movieName}
-									helperText={errors.movieName}
-								/>
-							</Grid>
-							<Grid item xs={12} sm={2}>
-								<TextField
-									value={values.season}
-									onChange={handleChange}
-									id="season"
-									name="season"
-									label="Season"
-									autoComplete="Season"
-									error={!!errors.season}
-									helperText={errors.season}
-								/>
-							</Grid>
-							<Grid item xs={12}>
-								<TextField
-									value={values.episode}
-									onChange={handleChange}
-									id="episode"
-									name="episode"
-									label="Episode"
-									autoComplete="Episode"
-									error={!!errors.episode}
-									helperText={errors.episode}
-								/>
-							</Grid>
+								>
+									<Form onSubmit={handleSubmit}>
+										<TextField
+											value={values.movieName}
+											onChange={(e) => {
+												handleChange(e);
+											}}
+											required
+											id="movieName"
+											name="movieName"
+											label="Movie Name"
+											fullWidth
+											autoComplete="given-name"
+											error={!!errors.movieName}
+											helperText={errors.movieName}
+										/>
+										<TextField
+											value={values.season}
+											onChange={handleChange}
+											id="season"
+											name="season"
+											label="Season"
+											autoComplete="Season"
+											error={!!errors.season}
+											helperText={errors.season}
+										/>
+										<TextField
+											value={values.episode}
+											onChange={handleChange}
+											id="episode"
+											name="episode"
+											label="Episode"
+											autoComplete="Episode"
+											error={!!errors.episode}
+											helperText={errors.episode}
+										/>
 
-							<Grid item xs={12}>
-								<Tooltip
-									classes={{
-										tooltip: classes.tootips,
-										arrow: classes.customArrow,
-									}}
-									arrow
-									title={errors.file || ""}
-									open={!!errors.file}
-								>
-									<Button
-										className={classes.buttonPadding}
-										size="small"
-										onClick={() => handleChoose()}
-										variant="contained"
-										color="primary"
-										component="span"
-									>
-										Choose A File
-									</Button>
-								</Tooltip>
-								<Button
-									type="submit"
-									className={classes.buttonPadding}
-									size="small"
-									variant="contained"
-									color="primary"
-								>
-									upload Video
-								</Button>
-								<Button
-									className={classes.buttonPadding}
-									size="small"
-									onClick={() => {
-										setFieldValue("file", null);
-										clearFile();
-									}}
-									variant="contained"
-									color="secondary"
-								>
-									Remove Video
-								</Button>
+										<Tooltip arrow title={errors.file || ""} open={!!errors.file}>
+											<Button
+												sx={{ mt: 2, mx: 2 }}
+												size="small"
+												onClick={() => handleChoose()}
+												variant="contained"
+												color="primary"
+												component="span"
+											>
+												Choose A File
+											</Button>
+										</Tooltip>
+										<Button
+											sx={{ mt: 2, mx: 2 }}
+											type="submit"
+											size="small"
+											variant="contained"
+											color="primary"
+										>
+											upload Video
+										</Button>
+										<Button
+											sx={{ mt: 2, mx: 2 }}
+											size="small"
+											onClick={() => {
+												setFieldValue("file", null);
+												clearFile();
+											}}
+											variant="contained"
+											color="secondary"
+										>
+											Remove Video
+										</Button>
+										<input
+											id="file"
+											style={{ display: "none" }}
+											name="file"
+											ref={inputRef}
+											onChange={(e) => {
+												setFieldValue("file", e.currentTarget.files);
+												console.log("values", values);
+												handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+											}}
+											type="file"
+											accept=".mp4"
+											hidden
+										/>
+									</Form>
+								</Box>
+								<Box sx={{ my: 3, mx: -3, alignItems: "centre" }}>
+									<Grid item xs={12}>
+										{source && (
+											<Container maxWidth="lg">
+												<video height="100%" width="100%" controls src={source} />
+											</Container>
+										)}
+									</Grid>
+								</Box>
 							</Grid>
 						</Grid>
-						<div className={classes.section1}>
-							<input
-								id="file"
-								name="file"
-								ref={inputRef}
-								style={{ display: "none" }}
-								onChange={(e) => {
-									setFieldValue("file", e.currentTarget.files);
-									console.log("values", values);
-									handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
-								}}
-								type="file"
-								accept=".mp4"
-							/>
-							<Grid item xs={12}>
-								{source && (
-									<Container maxWidth="lg">
-										<video height="100%" width="100%" controls src={source} />
-									</Container>
-								)}
-							</Grid>
-							<UploadFailModal message={modalMessage} handleClose={() => setModalMessage("")} />
-						</div>
-					</Form>
+						<UploadFailModal message={modalMessage} handleClose={() => setModalMessage("")} />
+					</>
 				)}
 			</Formik>
-			;
 		</React.Fragment>
 	);
 }

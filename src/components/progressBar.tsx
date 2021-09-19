@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { LinearProgressProps } from "@material-ui/core/LinearProgress";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import { styled } from "@mui/material/styles";
+import { LinearProgressProps } from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { CancelTokenSource } from "axios";
-import { Button, Grid } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { BorderLinearProgress } from "../material-ui/BoderLinearProgress";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
 	return (
@@ -23,10 +23,8 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 	);
 }
 
-const useStyles = makeStyles({
-	root: {
-		width: "100%",
-	},
+const Div = styled("div")({
+	width: "100%",
 });
 type Progress = {
 	fileName: string;
@@ -44,9 +42,8 @@ export default function LinearWithValueLabel({
 		return () => console.log("unmounted");
 	}, []);
 
-	const classes = useStyles();
 	return (
-		<div className={classes.root}>
+		<Div>
 			<CloudUploadIcon />
 			<p>Uploading {fileName}.</p>
 			<p>This will auto close after finished.You might wanna grab a coffee</p>
@@ -62,6 +59,6 @@ export default function LinearWithValueLabel({
 			>
 				CANCEL
 			</Button>
-		</div>
+		</Div>
 	);
 }

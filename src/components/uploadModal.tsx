@@ -1,42 +1,29 @@
 import React from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
+import { Box, styled } from "@mui/system";
+import Modal from "@mui/material/Modal";
 
-function getModalStyle() {
-	const top = 50;
-	const left = 50;
-
-	return {
-		top: `${top}%`,
-		left: `${left}%`,
-		transform: `translate(-${top}%, -${left}%)`,
-	};
-}
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		paper: {
-			position: "absolute",
-			width: 400,
-			backgroundColor: theme.palette.background.paper,
-			boxShadow: theme.shadows[5],
-			padding: theme.spacing(2, 4, 3),
-		},
-	})
-);
+const style = {
+	position: "absolute" as "absolute",
+	top: "50%",
+	left: "50%",
+	transform: "translate(-50%, -50%)",
+	width: 400,
+	bgcolor: "background.paper",
+	border: "2px solid #000",
+	boxShadow: 24,
+	p: 4,
+};
 
 type ModalProps = { open: boolean };
 
 export const UploadModal = (Children: React.FC) => {
-	const classes = useStyles();
-	const [modalStyle] = React.useState(getModalStyle);
 	// getModalStyle is not a pure function, we roll the style only on the first render
 
 	return function Wrapper({ open }: ModalProps) {
 		const body = (
-			<div style={modalStyle} className={classes.paper}>
+			<Box sx={style}>
 				<Children />
-			</div>
+			</Box>
 		);
 
 		return (
