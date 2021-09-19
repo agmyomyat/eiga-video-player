@@ -9,7 +9,7 @@ import { Button, Container, Tooltip } from "@material-ui/core";
 import { formStyles } from "../material-ui/styles/form";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
-import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/graphql-req";
+import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
