@@ -5,8 +5,8 @@ export const formSchema = Yup.object().shape({
 	episode: Yup.number().typeError("episode must be a number"),
 	file: Yup.mixed()
 		.required("Choose A Video")
-		.test("is-correct-file", "File too big Must not be more than 3-GB", checkIfFilesAreTooBig)
-		.test("is-big-file", "File Must Be Mp4", checkIfFilesAreCorrectType),
+		.test("is-big-file", "File too big Must not be more than 3-GB", checkIfFilesAreTooBig)
+		.test("is-correct-file", "File Must Be Mp4", checkIfFilesAreCorrectType),
 });
 export function checkIfFilesAreTooBig(files?: File[] | null): boolean {
 	let valid = true;

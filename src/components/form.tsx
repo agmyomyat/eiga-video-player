@@ -9,6 +9,7 @@ import { Box, Button, Container, Tooltip } from "@mui/material";
 import { formStyles } from "../material-ui/styles/form";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
+import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
@@ -37,12 +38,38 @@ export default function UploadForm({
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
 				onSubmit={async (values, { resetForm, setSubmitting }) => {
+					const _uuid = uuid();
 					setUploadState(true);
+					let _checkQuery;
+					let _queryError;
 					try {
-						const _uuid = uuid();
+						_checkQuery = await uploadEmbedMutation({
+							movieName: values.movieName,
+							eigaLink: _uuid,
+							uploadStatus: false,
+						});
+					} catch (e: any) {
+						_queryError = e;
+						alert(e.message);
+					}
+					if (_queryError) {
+						setModalMessage("Server error Try again later");
+						return setUploadState(false);
+					}
+					console.log("result query", _checkQuery.createEmbedVideo.embedVideo.id);
+					try {
+						let _mutationResultId = _checkQuery.createEmbedVideo.embedVideo.id;
 						const response = await handleUpload({ fileName: _uuid });
 						if (response!.status === 201) {
-							alert(_uuid);
+							await updateEmbedMutation({
+								id: _mutationResultId,
+								movieName: values.movieName,
+								eigaLink: _uuid,
+								season: parseInt(values.season),
+								episode: parseInt(values.episode),
+								uploadStatus: true,
+								originalLink: response?.config.url,
+							});
 							setModalMessage("upload completed");
 							setUploadState(false);
 							resetForm({});
