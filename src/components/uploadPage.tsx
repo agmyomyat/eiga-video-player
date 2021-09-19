@@ -110,7 +110,4 @@ const HOCDiv = styled("div")(({ theme }) => ({
 			padding: theme.spacing(1),
 		},
 	},
-	input: {
-		display: "none",
-	},
 }));
