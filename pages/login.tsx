@@ -12,8 +12,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-import { registerEmbedMutation } from "../src/api/graphql-req/signUp-gql-req";
+import { loginEmbedMutation } from "../src/api/graphql-req/signIn-gql-req";
 import { LoadingButton } from "@mui/lab";
+import { setAccessToken } from "../src/share/token";
 function ServerMessage({
 	success,
 	fail,
@@ -52,18 +53,9 @@ function Copyright(props: any) {
 	);
 }
 const Schema = Yup.object().shape({
-	userName: Yup.string()
-		.required("This field cannot be emptied")
-		.min(5, "userName must be more than 5 characters")
-		.trim("The contact name cannot include leading and trailing spaces"),
+	userName: Yup.string().required("This field cannot be emptied"),
 
-	password: Yup.string()
-		.required("This field is required")
-		.min(6, "Password too short, Must be more than 6 characters"),
-	confirmPassword: Yup.string().when("password", {
-		is: (val: string | any[]) => (val && val.length > 0 ? true : false),
-		then: Yup.string().oneOf([Yup.ref("password")], "Both password need to be the same"),
-	}),
+	password: Yup.string().required("This field is required"),
 });
 type ServerAlert = {
 	success: boolean;
@@ -81,25 +73,25 @@ export default function SignUp() {
 			initialValues={{
 				userName: "",
 				password: "",
-				confirmPassword: "",
 			}}
 			validationSchema={Schema}
 			onSubmit={async (values, { setSubmitting, resetForm }) => {
 				setSubmitting(true);
-				const _serverResult = await registerEmbedMutation({
+				const _serverResult = await loginEmbedMutation({
 					userName: values.userName,
 					password: values.password,
 				});
 				console.log(_serverResult);
-				if (_serverResult.embedRegister.success) {
+				const res = _serverResult.loginEmbedUploader;
+				if (res.statusCode === 200) {
+					setAccessToken(res.jwt);
 					resetForm({});
 					setSubmitting(false);
 					return setServerAlert({
 						...serverAlert,
 						success: true,
 						fail: false,
-						message:
-							"Account created. Ask an administrator to verify your account to start uploading",
+						message: _serverResult.loginEmbedUploader.status,
 					});
 				}
 				setSubmitting(false);
@@ -107,7 +99,7 @@ export default function SignUp() {
 					...serverAlert,
 					success: false,
 					fail: true,
-					message: _serverResult.embedRegister.status,
+					message: "Wrong username or password",
 				});
 			}}
 		>
@@ -126,7 +118,7 @@ export default function SignUp() {
 								<LockOutlinedIcon />
 							</Avatar>
 							<Typography component="h1" variant="h5">
-								Sign Up
+								Sign In
 							</Typography>
 							<ServerMessage
 								success={serverAlert.success}
@@ -168,19 +160,6 @@ export default function SignUp() {
 										error={!!errors.password}
 										helperText={errors.password}
 									/>
-									<TextField
-										value={values.confirmPassword}
-										onChange={handleChange}
-										margin="normal"
-										required
-										fullWidth
-										name="confirmPassword"
-										label="Confirm Password"
-										type="password"
-										id="confirmPassword"
-										error={!!errors.confirmPassword}
-										helperText={errors.confirmPassword}
-									/>
 									<LoadingButton
 										loading={isSubmitting}
 										type="submit"
@@ -188,7 +167,7 @@ export default function SignUp() {
 										variant="contained"
 										sx={{ mt: 3, mb: 2 }}
 									>
-										Sign Up
+										Sign In
 									</LoadingButton>
 									<Grid container>
 										<Grid item xs>
@@ -197,8 +176,8 @@ export default function SignUp() {
 											</Link>
 										</Grid>
 										<Grid item>
-											<Link href="/login" variant="body2">
-												{"Already have an account? Sign in"}
+											<Link href="/SignUp" variant="body2">
+												{"Not have an account? Sign Up"}
 											</Link>
 										</Grid>
 									</Grid>
@@ -212,4 +191,3 @@ export default function SignUp() {
 		</Formik>
 	);
 }
-
