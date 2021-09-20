@@ -5,7 +5,8 @@ export default async function uploadVideo<S extends (ProgressEvent: ProgressEven
 	video: string | Blob,
 	onUploadProgress: S,
 	filename: string,
-	CancelRequest: CancelTokenSource
+	CancelRequest: CancelTokenSource,
+	accessKey: string
 ) {
 	// const ourRequest = axios.CancelToken.source()
 
