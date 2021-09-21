@@ -12,7 +12,6 @@ import { ThemeProvider, createTheme } from "@mui/material";
 const theme = createTheme();
 
 function MyApp({ Component, pageProps }: AppProps) {
-	console.log("kasdflasdlf");
 	// const { user, userCheck } = useUser(
 	// 	useCallback(
 	// 		(state) => ({

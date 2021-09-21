@@ -111,7 +111,7 @@ export default function SignUp() {
 				});
 			}}
 		>
-			{({ values, errors, handleSubmit, handleChange, handleBlur, isSubmitting }) => {
+			{({ values, errors, submitForm, handleChange, handleBlur, isSubmitting }) => {
 				return (
 					<Container component="main" maxWidth="xs">
 						<Box
@@ -133,7 +133,7 @@ export default function SignUp() {
 								fail={serverAlert.fail}
 								message={serverAlert.message}
 							/>
-							<Form onSubmit={handleSubmit}>
+							<Form>
 								<Box sx={{ mt: 1 }}>
 									<TextField
 										value={values.userName}
@@ -183,7 +183,7 @@ export default function SignUp() {
 									/>
 									<LoadingButton
 										loading={isSubmitting}
-										type="submit"
+										onClick={submitForm}
 										fullWidth
 										variant="contained"
 										sx={{ mt: 3, mb: 2 }}

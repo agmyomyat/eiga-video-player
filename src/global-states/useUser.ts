@@ -4,20 +4,28 @@ import { verifyTokenMutation } from "../api/graphql-req/verifyToken-gql-req";
 type UserProp = {
 	uploader: string;
 	verify: boolean;
+	accessToken: string;
 	setUserVerify: (prop: boolean) => void;
 	setUploader: (prop: string) => void;
 	checkUser: () => Promise<any>;
+	logOut: () => void;
 };
 export const useUser = create<UserProp>((set) => ({
+	accessToken: "",
 	uploader: "",
 	verify: false,
 	setUserVerify: (prop: boolean) => set((state) => ({ ...state, verify: prop })),
 	setUploader: (prop: string) => set((state) => ({ ...state, uploader: prop })),
+	logOut: () => set((state) => ({ ...state, verify: false, uploader: "" })),
 	checkUser: async () => {
 		try {
 			const res = await verifyTokenMutation();
-			set({ verify: await res.verifyToken.verify });
-			set({ uploader: await res.verifyToken.user });
+			set((state) => ({
+				...state,
+				verify: res.verifyToken.verify,
+				uploader: res.verifyToken.user,
+				accessToken: res.verifyToken.bnet,
+			}));
 			console.log("hey");
 			return res;
 		} catch (e: any) {

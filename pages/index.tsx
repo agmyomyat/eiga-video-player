@@ -7,11 +7,13 @@ import { verifyTokenMutation } from "../src/api/graphql-req/verifyToken-gql-req"
 import { useUser } from "../src/global-states/useUser";
 import shallow from "zustand/shallow";
 import { useCallback, useEffect } from "react";
+import { ClassNames } from "@emotion/react";
 const Home: NextPage = (prop) => {
 	const { replace } = useRouter();
-	const { userVerify, user, userCheck } = useUser(
+	const { logOut, userVerify, user, userCheck } = useUser(
 		useCallback(
 			(state) => ({
+				logOut: state.logOut,
 				userVerify: state.verify,
 				user: state.uploader,
 				userCheck: state.checkUser,
@@ -21,17 +23,17 @@ const Home: NextPage = (prop) => {
 		),
 		shallow
 	);
-	if (!isServer()) {
+	useEffect(() => {
 		const token = getAccessToken();
 		if (!token) {
 			replace("/login");
+			return;
 		}
-	}
-	useEffect(() => {
-		let _unmount = false;
-		if (!user && !_unmount) {
+		if (!user && token) {
 			try {
+				console.log("user in index", user);
 				userCheck().then((res) => {
+					console.log(res);
 					if (res.verifyToken.verify) return;
 					replace("/login");
 				});
@@ -43,7 +45,7 @@ const Home: NextPage = (prop) => {
 	console.log("this retrigger");
 	//Bunch of code...
 
-	return <>{userVerify ? <UploadPage /> : null}</>;
+	return <UploadPage verify={userVerify} />;
 };
 
 export default Home;

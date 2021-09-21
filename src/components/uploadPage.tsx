@@ -8,7 +8,7 @@ import UploadForm from "./form";
 
 let cancelToken: CancelTokenSource;
 
-export const UploadPage: React.FC = () => {
+export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const videoName = useRef<string>("");
 	const [progress, setProgress] = useState<number>(0);
@@ -82,6 +82,7 @@ export const UploadPage: React.FC = () => {
 		);
 	};
 	const UploadModalHOC = UploadModal(uploadProgress);
+	if (!verify) return <></>;
 	return (
 		<HOCDiv>
 			{/* <Container> */}
