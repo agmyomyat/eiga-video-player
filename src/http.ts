@@ -13,7 +13,7 @@ export default async function uploadVideo<S extends (ProgressEvent: ProgressEven
 	let config = {
 		headers: {
 			"Content-Type": "application/octet-stream",
-			AccessKey: "12ab3bfc-aa6f-429e-b7c678fd7058-5596-4949",
+			AccessKey: accessKey,
 		},
 		onUploadProgress,
 		cancelToken: CancelRequest.token,

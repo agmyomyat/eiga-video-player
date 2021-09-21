@@ -5,10 +5,12 @@ import LinearWithValueLabel from "../components/progressBar";
 import { UploadModal } from "./uploadModal";
 import { styled } from "@mui/material";
 import UploadForm from "./form";
+import { useUser } from "../global-states/useUser";
 
 let cancelToken: CancelTokenSource;
 
 export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
+	const accessToken = useUser.getState().accessToken;
 	const inputRef = useRef<HTMLInputElement>(null);
 	const videoName = useRef<string>("");
 	const [progress, setProgress] = useState<number>(0);
@@ -48,7 +50,7 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
 		} else {
 			throw Error("inputRef value not found(its not supposed to be empty)");
 		}
-		return uploadVideo(video, onUploadProgress, fileName, cancelToken);
+		return uploadVideo(video, onUploadProgress, fileName, cancelToken, accessToken);
 	}
 
 	useEffect(() => {
