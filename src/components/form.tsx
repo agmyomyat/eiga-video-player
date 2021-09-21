@@ -1,7 +1,6 @@
 import React, { ChangeEvent, Dispatch, RefObject, SetStateAction, useState } from "react";
 import { uuid } from "../helpers/uuid";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Form, Formik, useFormik } from "formik";
 import { formSchema } from "../helpers/formValidation";
@@ -9,7 +8,9 @@ import { Box, Button, Container, Link, Paper, Tooltip } from "@mui/material";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
 import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
-import { Copyright } from "@mui/icons-material";
+import { useUser } from "../global-states/useUser";
+const user = useUser.getState().uploader;
+
 type FormProp<T = () => void> = {
 	handleChoose: T;
 	source: string;
@@ -66,6 +67,7 @@ export default function UploadForm({
 								episode: parseInt(values.episode),
 								uploadStatus: true,
 								originalLink: response?.config.url,
+								uploader: user,
 							});
 							setModalMessage("upload completed");
 							setUploadState(false);
