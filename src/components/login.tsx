@@ -10,6 +10,7 @@ import { Formik, Form, replace } from "formik";
 import React from "react";
 import { loginEmbedMutation } from "../api/graphql-req/signIn-gql-req";
 import { setAccessToken } from "../share/token";
+import { useRouter } from "next/router";
 function ServerMessage({
 	success,
 	fail,
@@ -69,6 +70,7 @@ export default function LoginComponent({
 	setVerify,
 	setUser,
 }: LoginProps) {
+	const { push } = useRouter();
 	return (
 		<Formik
 			initialValues={{
@@ -180,7 +182,7 @@ export default function LoginComponent({
 											</Link>
 										</Grid>
 										<Grid item>
-											<Link href="/SignUp" variant="body2">
+											<Link href="#" onClick={() => push("/register")} variant="body2">
 												{"Not have an account? Sign Up"}
 											</Link>
 										</Grid>

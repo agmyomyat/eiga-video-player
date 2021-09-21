@@ -14,6 +14,7 @@ import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { registerEmbedMutation } from "../src/api/graphql-req/signUp-gql-req";
 import { LoadingButton } from "@mui/lab";
+import { useRouter } from "next/router";
 function ServerMessage({
 	success,
 	fail,
@@ -71,6 +72,7 @@ type ServerAlert = {
 	message: string;
 };
 export default function SignUp() {
+	const { push } = useRouter();
 	const [serverAlert, setServerAlert] = React.useState<ServerAlert>({
 		success: false,
 		fail: false,
@@ -197,7 +199,7 @@ export default function SignUp() {
 											</Link>
 										</Grid>
 										<Grid item>
-											<Link href="/login" variant="body2">
+											<Link href="#" onClick={() => push("/login")} variant="body2">
 												{"Already have an account? Sign in"}
 											</Link>
 										</Grid>
