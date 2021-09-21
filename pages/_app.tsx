@@ -1,18 +1,37 @@
 import type { AppProps } from "next/app";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";
 import { ThemeProvider, createTheme } from "@mui/material";
+// import { useRouter } from "next/router";
+// import { useUser } from "../src/global-states/useUser";
+// import { isServer } from "../src/helpers/isServer";
+// import { getAccessToken } from "../src/share/token";
+// import shallow from "zustand/shallow";
 
 const theme = createTheme();
 
 function MyApp({ Component, pageProps }: AppProps) {
+	console.log("kasdflasdlf");
+	// const { user, userCheck } = useUser(
+	// 	useCallback(
+	// 		(state) => ({
+	// 			userVerify: state.verify,
+	// 			user: state.uploader,
+	// 			userCheck: state.checkUser,
+	// 		}),
+
+	// 		[]
+	// 	),
+	// 	shallow
+	// );
 	useEffect(() => {
 		const jssStyles = document.querySelector("#jss-server-side");
 		if (jssStyles && jssStyles.parentElement) {
 			jssStyles.parentElement.removeChild(jssStyles);
 		}
 	}, []);
+
 	return (
 		<React.Fragment>
 			<Head>

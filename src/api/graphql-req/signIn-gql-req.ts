@@ -7,6 +7,7 @@ const loginEmbed = gql`
 			status
 			userName
 			jwt
+			verify
 		}
 	}
 `;

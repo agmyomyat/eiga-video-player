@@ -7,6 +7,7 @@ const verifyToken = gql`
 			status
 			statusCode
 			bnet
+			user
 		}
 	}
 `;
