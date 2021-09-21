@@ -7,7 +7,6 @@ import { verifyTokenMutation } from "../src/api/graphql-req/verifyToken-gql-req"
 import { useUser } from "../src/global-states/useUser";
 import shallow from "zustand/shallow";
 import { useCallback, useEffect } from "react";
-import { ClassNames } from "@emotion/react";
 const Home: NextPage = (prop) => {
 	const { replace } = useRouter();
 	const { logOut, userVerify, user, userCheck } = useUser(

@@ -7,10 +7,9 @@ import { LoadingButton } from "@mui/lab";
 import { Container, Avatar, Typography, TextField, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik, Form, replace } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { loginEmbedMutation } from "../api/graphql-req/signIn-gql-req";
 import { setAccessToken } from "../share/token";
-import { useRouter } from "next/router";
 function ServerMessage({
 	success,
 	fail,

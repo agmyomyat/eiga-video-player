@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Form, Formik, useFormik } from "formik";
 import { formSchema } from "../helpers/formValidation";
-import { Box, Button, Container, Link, Paper, Tooltip } from "@mui/material";
+import { Box, Button, Container, Divider, Link, Paper, Stack, Tooltip } from "@mui/material";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
 import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
@@ -163,39 +163,46 @@ export default function UploadForm({
 											helperText={errors.episode}
 										/>
 
-										<Tooltip arrow title={errors.file || ""} open={!!errors.file}>
+										<Stack
+											direction="row"
+											divider={<Divider orientation="vertical" flexItem />}
+											spacing={2}
+											sx={{ mt: 2 }}
+										>
+											<Tooltip arrow title={errors.file || ""} open={!!errors.file}>
+												<Button
+													sx={{ mt: 2, mx: 2 }}
+													size="small"
+													onClick={() => handleChoose()}
+													variant="contained"
+													color="primary"
+													component="span"
+												>
+													Choose A File
+												</Button>
+											</Tooltip>
+											<Button
+												sx={{ mt: 2, mx: 2 }}
+												type="submit"
+												size="small"
+												variant="contained"
+												color="primary"
+											>
+												upload Video
+											</Button>
 											<Button
 												sx={{ mt: 2, mx: 2 }}
 												size="small"
-												onClick={() => handleChoose()}
+												onClick={() => {
+													setFieldValue("file", null);
+													clearFile();
+												}}
 												variant="contained"
-												color="primary"
-												component="span"
+												color="secondary"
 											>
-												Choose A File
+												Remove Video
 											</Button>
-										</Tooltip>
-										<Button
-											sx={{ mt: 2, mx: 2 }}
-											type="submit"
-											size="small"
-											variant="contained"
-											color="primary"
-										>
-											upload Video
-										</Button>
-										<Button
-											sx={{ mt: 2, mx: 2 }}
-											size="small"
-											onClick={() => {
-												setFieldValue("file", null);
-												clearFile();
-											}}
-											variant="contained"
-											color="secondary"
-										>
-											Remove Video
-										</Button>
+										</Stack>
 										<input
 											id="file"
 											style={{ display: "none" }}
