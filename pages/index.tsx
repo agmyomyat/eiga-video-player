@@ -2,11 +2,10 @@ import type { NextPage } from "next";
 import { UploadPage } from "../src/components/uploadPage";
 import { getAccessToken } from "../src/share/token";
 import { useRouter } from "next/router";
-import { isServer } from "../src/helpers/isServer";
-import { verifyTokenMutation } from "../src/api/graphql-req/verifyToken-gql-req";
 import { useUser } from "../src/global-states/useUser";
 import shallow from "zustand/shallow";
 import { useCallback, useEffect } from "react";
+const token = getAccessToken();
 const Home: NextPage = (prop) => {
 	const { replace } = useRouter();
 	const { logOut, userVerify, user, userCheck } = useUser(
@@ -23,7 +22,6 @@ const Home: NextPage = (prop) => {
 		shallow
 	);
 	useEffect(() => {
-		const token = getAccessToken();
 		if (!token) {
 			replace("/login");
 			return;
