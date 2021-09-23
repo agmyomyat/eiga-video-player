@@ -9,7 +9,6 @@ import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
 import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
 import { useUser } from "../global-states/useUser";
-const user = useUser.getState().uploader;
 
 type FormProp<T = () => void> = {
 	handleChoose: T;
@@ -36,6 +35,8 @@ export default function UploadForm({
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
 				onSubmit={async (values, { resetForm, setSubmitting }) => {
+					const user = useUser.getState().uploader;
+					console.log("user in submit uplaod", user);
 					const _uuid = uuid();
 					setUploadState(true);
 					let _checkQuery;
@@ -45,6 +46,7 @@ export default function UploadForm({
 							movieName: values.movieName,
 							eigaLink: _uuid,
 							uploadStatus: false,
+							uploader: user,
 						});
 					} catch (e: any) {
 						_queryError = e;
@@ -67,7 +69,6 @@ export default function UploadForm({
 								episode: parseInt(values.episode),
 								uploadStatus: true,
 								originalLink: response?.config.url,
-								uploader: user,
 							});
 							setModalMessage("upload completed");
 							setUploadState(false);

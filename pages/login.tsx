@@ -7,7 +7,6 @@ import { useUser } from "../src/global-states/useUser";
 import { isServer } from "../src/helpers/isServer";
 import { getAccessToken, setAccessToken } from "../src/share/token";
 
-const nonReactiveUser = useUser.getState().uploader;
 type ServerAlert = {
 	success: boolean;
 	fail: boolean;
@@ -36,16 +35,20 @@ export default function Login() {
 		shallow
 	);
 	useEffect(() => {
-		if (getAccessToken() && !nonReactiveUser) {
-			checkUser();
+		if (uploader && userVerify) {
+			replace("/");
+			return;
 		}
-	}, [checkUser]);
+		if (getAccessToken() && !uploader) {
+			checkUser().then(
+				(res) => {
+					console.log("userVierfiy", userVerify);
+				},
+				(e) => console.error(e)
+			);
+		}
+	}, [checkUser, replace, uploader, userVerify]);
 
-	useEffect(() => {
-		console.log("userVierfiy", userVerify);
-		if (!userVerify) return;
-		replace("/");
-	}, [replace, userVerify]);
 	return (
 		<>
 			{!uploader && !getAccessToken() && (

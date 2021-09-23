@@ -9,6 +9,7 @@ const uploadEmbed = gql`
 		$episode: Int
 		$eigaLink: String
 		$uploadStatus: Boolean
+		$uploader: String
 	) {
 		createEmbedVideo(
 			input: {
@@ -18,6 +19,7 @@ const uploadEmbed = gql`
 					episode: $episode
 					eigaLink: $eigaLink
 					uploadStatus: $uploadStatus
+					uploader: $uploader
 				}
 			}
 		) {
@@ -64,6 +66,7 @@ type EmbedProp = {
 	episode?: number;
 	eigaLink?: string;
 	uploadStatus: boolean;
+	uploader: string;
 };
 type UpdateEmbedProp = {
 	id: Required<number>;
@@ -73,7 +76,6 @@ type UpdateEmbedProp = {
 	eigaLink?: string;
 	uploadStatus: boolean;
 	originalLink: string | undefined;
-	uploader: string;
 };
 export async function uploadEmbedMutation({ ...prop }: EmbedProp) {
 	return client.request(uploadEmbed, prop);

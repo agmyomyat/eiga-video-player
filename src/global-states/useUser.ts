@@ -10,7 +10,7 @@ type UserProp = {
 	checkUser: () => Promise<any>;
 	logOut: () => void;
 };
-export const useUser = create<UserProp>((set) => ({
+export const useUser = create<UserProp>((set, get) => ({
 	accessToken: "",
 	uploader: "",
 	verify: false,
@@ -26,7 +26,7 @@ export const useUser = create<UserProp>((set) => ({
 				uploader: res.verifyToken.user,
 				accessToken: res.verifyToken.bnet,
 			}));
-			console.log("hey");
+			console.log("state in checkuser ", get().uploader);
 			return res;
 		} catch (e: any) {
 			console.log(e.message);

@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useUser } from "../src/global-states/useUser";
 import shallow from "zustand/shallow";
 import { useCallback, useEffect } from "react";
-const token = getAccessToken();
 const Home: NextPage = (prop) => {
 	const { replace } = useRouter();
 	const { logOut, userVerify, user, userCheck } = useUser(
@@ -22,7 +21,8 @@ const Home: NextPage = (prop) => {
 		shallow
 	);
 	useEffect(() => {
-		if (!token) {
+		const token = getAccessToken();
+		if ((user && !userVerify) || !token) {
 			replace("/login");
 			return;
 		}
@@ -31,16 +31,14 @@ const Home: NextPage = (prop) => {
 				console.log("user in index", user);
 				userCheck().then((res) => {
 					console.log(res);
-					if (res.verifyToken.verify) return;
-					replace("/login");
 				});
 			} catch (e: any) {
 				console.log(e.message);
 			}
+			//Bunch of code...
+			console.log("this retrigger");
 		}
-	}, [replace, user, userCheck]);
-	console.log("this retrigger");
-	//Bunch of code...
+	}, [replace, user, userCheck, userVerify]);
 
 	return <UploadPage verify={userVerify} />;
 };
