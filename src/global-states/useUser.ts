@@ -1,5 +1,6 @@
 import create from "zustand";
 import { verifyTokenMutation } from "../api/graphql-req/verifyToken-gql-req";
+import { setAccessToken } from "../share/token";
 
 type UserProp = {
 	uploader: string;
@@ -16,7 +17,11 @@ export const useUser = create<UserProp>((set, get) => ({
 	verify: false,
 	setUserVerify: (prop: boolean) => set((state) => ({ ...state, verify: prop })),
 	setUploader: (prop: string) => set((state) => ({ ...state, uploader: prop })),
-	logOut: () => set((state) => ({ ...state, verify: false, uploader: "" })),
+	logOut: () =>
+		set((state) => {
+			setAccessToken("");
+			return { ...state, verify: false, uploader: "" };
+		}),
 	checkUser: async () => {
 		try {
 			const res = await verifyTokenMutation();

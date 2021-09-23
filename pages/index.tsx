@@ -26,7 +26,7 @@ const Home: NextPage = (prop) => {
 			replace("/login");
 			return;
 		}
-		if (!user && token) {
+		if (!user) {
 			try {
 				console.log("user in index", user);
 				userCheck().then((res) => {

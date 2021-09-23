@@ -42,7 +42,7 @@ export default function Login() {
 		if (getAccessToken() && !uploader) {
 			checkUser().then(
 				(res) => {
-					console.log("userVierfiy", userVerify);
+					console.log("userVierfiy", res);
 				},
 				(e) => console.error(e)
 			);

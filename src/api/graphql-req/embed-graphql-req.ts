@@ -39,6 +39,7 @@ const updateEmbed = gql`
 		$uploadStatus: Boolean
 		$originalLink: String
 		$uploader: String
+		$fileSize: String
 	) {
 		updateEmbedVideo(
 			input: {
@@ -51,6 +52,7 @@ const updateEmbed = gql`
 					uploadStatus: $uploadStatus
 					originalLink: $originalLink
 					uploader: $uploader
+					fileSize: $fileSize
 				}
 			}
 		) {
@@ -69,6 +71,7 @@ type EmbedProp = {
 	uploader: string;
 };
 type UpdateEmbedProp = {
+	fileSize?: string;
 	id: Required<number>;
 	movieName?: string;
 	season?: number;

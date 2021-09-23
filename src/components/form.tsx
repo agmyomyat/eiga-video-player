@@ -4,11 +4,23 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Form, Formik, useFormik } from "formik";
 import { formSchema } from "../helpers/formValidation";
-import { Box, Button, Container, Divider, Link, Paper, Stack, Tooltip } from "@mui/material";
+import {
+	Avatar,
+	Box,
+	Button,
+	Container,
+	Divider,
+	Link,
+	Paper,
+	Stack,
+	Tooltip,
+	Typography,
+} from "@mui/material";
 import UploadFailModal from "../material-ui/uploadFailModal";
 import axios, { AxiosResponse } from "axios";
 import { uploadEmbedMutation, updateEmbedMutation } from "../api/graphql-req/embed-graphql-req";
 import { useUser } from "../global-states/useUser";
+import { deepPurple } from "@mui/material/colors";
 
 type FormProp<T = () => void> = {
 	handleChoose: T;
@@ -29,13 +41,15 @@ export default function UploadForm({
 	setUploadState,
 }: FormProp) {
 	const [modalMessage, setModalMessage] = useState<string>("");
+	const user = useUser.getState().uploader;
+	const logOut = useUser.getState().logOut;
 	return (
 		<React.Fragment>
 			<Formik
 				initialValues={{ movieName: "", season: "", episode: "", file: null }}
 				validationSchema={formSchema}
 				onSubmit={async (values, { resetForm, setSubmitting }) => {
-					const user = useUser.getState().uploader;
+					const _user = useUser.getState().uploader;
 					console.log("user in submit uplaod", user);
 					const _uuid = uuid();
 					setUploadState(true);
@@ -46,7 +60,7 @@ export default function UploadForm({
 							movieName: values.movieName,
 							eigaLink: _uuid,
 							uploadStatus: false,
-							uploader: user,
+							uploader: _user,
 						});
 					} catch (e: any) {
 						_queryError = e;
@@ -61,6 +75,10 @@ export default function UploadForm({
 						let _mutationResultId = _checkQuery.createEmbedVideo.embedVideo.id;
 						const response = await handleUpload({ fileName: _uuid });
 						if (response!.status === 201) {
+							const fileSize = `${(response?.config.data.size / 1024 / 1024)
+								.toFixed(2)
+								.toString()}-MB`;
+							console.log(fileSize);
 							await updateEmbedMutation({
 								id: _mutationResultId,
 								movieName: values.movieName,
@@ -69,6 +87,7 @@ export default function UploadForm({
 								episode: parseInt(values.episode),
 								uploadStatus: true,
 								originalLink: response?.config.url,
+								fileSize: fileSize,
 							});
 							setModalMessage("upload completed");
 							setUploadState(false);
@@ -119,6 +138,13 @@ export default function UploadForm({
 								}}
 							/>
 							<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+								<Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+									<Avatar sx={{ bgcolor: deepPurple[500] }}>{user.charAt(0).toUpperCase()}</Avatar>
+									<Typography variant="h5">{user}</Typography>
+									<Button variant="outlined" onClick={() => logOut()}>
+										LogOut
+									</Button>
+								</Stack>
 								<Box
 									sx={{
 										my: 8,
