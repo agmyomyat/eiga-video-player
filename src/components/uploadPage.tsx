@@ -10,21 +10,20 @@ import { useUser } from "../global-states/useUser";
 let cancelToken: CancelTokenSource;
 
 export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
-	const accessToken = useUser.getState().accessToken;
 	const inputRef = useRef<HTMLInputElement>(null);
 	const videoName = useRef<string>("");
 	const [progress, setProgress] = useState<number>(0);
 	const [video, setVideo] = useState<string | Blob>("");
 	const [source, setSource] = useState<string>("");
 	const [uploadState, setUploadState] = useState<boolean>(false);
-
+	
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!inputRef.current || !event.target) {
 			throw Error("ref is not assigned");
 		}
 		console.log("file", event.target.files);
 		console.log("refFile", inputRef.current.files![0].name);
-
+		
 		if (!event.target.files?.length) return setVideo("");
 		if (event.target.files?.length !== 0) {
 			const file = event.target.files![0];
@@ -35,11 +34,12 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
 			console.log("ref", inputRef.current.value);
 		}
 	};
-
+	
 	function onUploadProgress(event: ProgressEvent) {
 		setProgress(Math.round((99 * event.loaded) / event.total));
 	}
 	async function _handleUpload({ fileName }: { fileName: string }) {
+		const accessToken = useUser.getState().accessToken;
 		if (cancelToken) {
 			cancelToken.cancel();
 		}
