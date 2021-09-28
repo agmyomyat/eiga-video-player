@@ -20,7 +20,7 @@ export default function Login() {
 	});
 
 	const { replace } = useRouter();
-	const { uploader, userVerify, checkUser, setUserVerify, setUser } = useUser(
+	const { setBnet,uploader, userVerify, checkUser, setUserVerify, setUser } = useUser(
 		React.useCallback(
 			(state) => ({
 				setUserVerify: state.setUserVerify,
@@ -28,6 +28,7 @@ export default function Login() {
 				uploader: state.uploader,
 				setUser: state.setUploader,
 				checkUser: state.checkUser,
+				setBnet:state.setAccessToken
 			}),
 
 			[]
@@ -57,6 +58,7 @@ export default function Login() {
 					setUser={setUser}
 					serverAlert={serverAlert}
 					setServerAlert={setServerAlert}
+					setBnetToken={setAccessToken}
 				/>
 			)}
 			{!userVerify && uploader && (

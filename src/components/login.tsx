@@ -58,6 +58,7 @@ type LoginProps = {
 	serverAlert: ServerAlert;
 	setVerify: (prop: boolean) => void;
 	setUser: (prop: string) => void;
+	setBnetToken:(prop:string)=>void
 };
 type ServerAlert = {
 	success: boolean;
@@ -69,6 +70,7 @@ export default function LoginComponent({
 	serverAlert,
 	setVerify,
 	setUser,
+	setBnetToken,
 }: LoginProps) {
 	const { push } = useRouter();
 	return (
@@ -89,6 +91,7 @@ export default function LoginComponent({
 				if (res.statusCode === 200) {
 					console.log("this is not supo");
 					setAccessToken(res.jwt);
+					setBnetToken(res.bnet)
 					resetForm({});
 					setSubmitting(false);
 					setServerAlert({

@@ -8,6 +8,7 @@ const loginEmbed = gql`
 			userName
 			jwt
 			verify
+			bnet
 		}
 	}
 `;

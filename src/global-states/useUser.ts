@@ -10,11 +10,13 @@ type UserProp = {
 	setUploader: (prop: string) => void;
 	checkUser: () => Promise<any>;
 	logOut: () => void;
+	setAccessToken:(prop:string)=>void
 };
 export const useUser = create<UserProp>((set, get) => ({
 	accessToken: "",
 	uploader: "",
 	verify: false,
+	setAccessToken:(prop:string)=>set((state)=>({...state,accessToken:prop})),
 	setUserVerify: (prop: boolean) => set((state) => ({ ...state, verify: prop })),
 	setUploader: (prop: string) => set((state) => ({ ...state, uploader: prop })),
 	logOut: () =>
