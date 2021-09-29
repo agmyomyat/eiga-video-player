@@ -89,7 +89,7 @@ export default function LoginComponent({
 				console.log(_serverResult);
 				const res = _serverResult.loginEmbedUploader;
 				if (res.statusCode === 200) {
-					console.log("this is not supo");
+					console.log("token",res.jwt)
 					setAccessToken(res.jwt);
 					setBnetToken(res.bnet)
 					resetForm({});

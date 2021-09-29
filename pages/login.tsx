@@ -58,7 +58,7 @@ export default function Login() {
 					setUser={setUser}
 					serverAlert={serverAlert}
 					setServerAlert={setServerAlert}
-					setBnetToken={setAccessToken}
+					setBnetToken={setBnet}
 				/>
 			)}
 			{!userVerify && uploader && (
