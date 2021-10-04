@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/e",
+      "headers": [
+        {
+          "key": "access-control-allow-origin",
+          "value": "https:www.google.com"
+        }
+      ]
+    }
+  ]
+}

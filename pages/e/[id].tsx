@@ -1,12 +1,36 @@
 import { CircularProgressProps, circularProgressClasses, CircularProgress, Box } from "@mui/material";
 import { NextRouter, useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { checkPremiumQuery } from "../../src/api/graphql-req/checkPremium";
 import Player from "../../src/components/player";
 
 export default function Embed(props:any) {
   const router:NextRouter = useRouter()
-  console.log("props", props)
-  if (router.isFallback) return <FacebookCircularProgress/>
+  const [loading,setLoading] = useState(true)
+  console.log("props", router.query)
+  useEffect(() => {
+    if(router.isFallback)return 
+    if (!router.isFallback && !router.query.token) {
+      router.replace("/404")
+      return
+    }
+    checkPremiumQuery(router.query.token as string).then((res) => {
+      console.log("result",res)
+      if (res.getUserData.premium) {
+      return setLoading(false)
+      } else {
+        router.replace('/404')
+        return
+
+    }
+    }).catch((e) => {
+      console.log(e.message)
+      router.replace('/404')
+    })
+
+  },[router])
+
+  if (router.isFallback||loading) return <FacebookCircularProgress/>
 	return (
 		<div>
       <Player uuid={props.params.id}/>
