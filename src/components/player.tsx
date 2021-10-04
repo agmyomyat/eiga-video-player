@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 const config = {
 	"title": "Example Title",
 	"debug": true,
@@ -53,8 +54,13 @@ export default function Player({ uuid }:{uuid:string}) {
 		<>
 			{
 				error ?
-					<h1>error occured</h1>:
-		<div className="plyr__video-embed" style={{width:"100%", height:"100%"}} >
+				<Box display="flex"
+				justifyContent="center"
+				alignItems="center"
+				minHeight="100vh">
+				<Typography variant="h5"  >#404 errror occured.File not found </Typography>
+				</Box>:
+		<div className="plyr__video-embed" style={{padding:0,margin:0,width:"100%", height:"100%"}} >
 			<video id="embed_player" controls data-plyr-config={videoCf}></video>
 			
 			
