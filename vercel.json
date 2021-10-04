@@ -1,11 +1,11 @@
 {
   "headers": [
     {
-      "source": "/e/(.*)",
+      "source": "/e",
       "headers": [
         {
           "key": "access-control-allow-origin",
-          "value": "https://eiga.sbs"
+          "value": "https:www.google.com"
         }
       ]
     }
