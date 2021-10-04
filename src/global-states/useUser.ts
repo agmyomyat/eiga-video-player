@@ -27,6 +27,7 @@ export const useUser = create<UserProp>((set, get) => ({
 	checkUser: async () => {
 		try {
 			const res = await verifyTokenMutation();
+			if(!res.verifyToken.user)get().logOut()
 			set((state) => ({
 				...state,
 				verify: res.verifyToken.verify,
