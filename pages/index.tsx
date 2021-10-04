@@ -31,6 +31,7 @@ const Home: NextPage = (prop) => {
 				console.log("user in index", user);
 				userCheck().then((res) => {
 					console.log(res);
+
 				});
 			} catch (e: any) {
 				console.log(e.message);

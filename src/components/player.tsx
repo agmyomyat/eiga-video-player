@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const config = {
 	"title": "Example Title",
 	"debug": true,
+	"blankVideo":"https://cdn.plyr.io/static/blank.mp4",
 	"controls": [
     'play-large', // The large play button in the center
     'restart', // Restart playback
@@ -20,26 +21,45 @@ const config = {
 ]
 }
 const videoCf = JSON.stringify(config)
-export default function Player() {
+export default function Player({ uuid }:{uuid:string}) {
+	const [error, setError] = useState(false)
+	const Eplayer = typeof window !=="undefined"&& document.querySelector('#embed_player');
 	
 	useEffect(() => {
+		Eplayer&&Eplayer.addEventListener('error', event => console.error('Doh!', (Eplayer as any).error, event), false);
 		const Plyr =require("plyr");
 		const styles =require('plyr/dist/plyr.css');
 		const player = new Plyr('#embed_player');
+		player.on('error', (event:any) => {
+			console.log("error is happening")
+			console.log("event happens" ,event.detail.plyr.error)
+			setError(true)
+		});
+		player.on('ready',(event:any)=> {
+			console.log("ready is happening")
+			setError(false)
+		})
 		player.source = {
 			type: 'video',
 			title: 'Example title',
 			sources: [
 				{
-					src: 'https://plyr.eiga.sbs/9f797fab-8dab-472a-86ef-d9b8ec5db9f6.mp4',
+					src: `https://plyr.eiga.sbs/${uuid}.mp4`,
 					type: 'video/mp4',
 					size: 720,
 				}]}
-	} ,[])
+	} ,[Eplayer, uuid])
 	return (
+		<>
+			{
+				error ?
+					<h1>error occured</h1>:
 		<div className="plyr__video-embed" style={{width:"100%", height:"100%"}} >
 			<video id="embed_player" controls data-plyr-config={videoCf}></video>
 			
+			
 		</div>
+		}
+</>
 	)
 }

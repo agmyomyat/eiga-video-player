@@ -84,7 +84,7 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
 		);
 	};
 	const UploadModalHOC = UploadModal(uploadProgress);
-	if (!verify) return <></>;
+	if (!verify) return <>some thing wrong try refreshing the page</>;
 	return (
 		<HOCDiv>
 			{/* <Container> */}
