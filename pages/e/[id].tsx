@@ -8,11 +8,12 @@ export default function Embed(props:any) {
   const router:NextRouter = useRouter()
   const [loading,setLoading] = useState(true)
   useEffect(() => {
-    if(router.isFallback)return 
+    if(!router.isReady||router.isFallback)return 
     console.log("router readey",router.isReady)
     if (router.isReady&& !router.query.token) {
       console.log("props", router.query)
       console.log("it fucking")
+      router.replace('/404')
       return
     }
     checkPremiumQuery(router.query.token as string).then((res) => {
