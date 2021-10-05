@@ -7,11 +7,11 @@ import Player from "../../src/components/player";
 export default function Embed(props:any) {
   const router:NextRouter = useRouter()
   const [loading,setLoading] = useState(true)
-  console.log("props", router.query)
   useEffect(() => {
     if(router.isFallback)return 
     if (!router.isFallback && !router.query.token) {
-      router.replace("/404")
+      console.log("props", router.query)
+      console.log("it fucking")
       return
     }
     checkPremiumQuery(router.query.token as string).then((res) => {
