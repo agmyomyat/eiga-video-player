@@ -9,7 +9,8 @@ export default function Embed(props:any) {
   const [loading,setLoading] = useState(true)
   useEffect(() => {
     if(router.isFallback)return 
-    if (!router.isFallback && !router.query.token) {
+    console.log("router readey",router.isReady)
+    if (router.isReady&& !router.query.token) {
       console.log("props", router.query)
       console.log("it fucking")
       return
