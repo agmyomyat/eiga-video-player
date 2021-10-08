@@ -31,11 +31,12 @@ export default function Player({ uuid }:{uuid:string}) {
 		const Plyr =require("plyr");
 		const styles =require('plyr/dist/plyr.css');
 		const player = new Plyr('#embed_player');
-		player.on('error', (event:any) => {
-			console.log("error is happening")
-			console.log("event happens" ,event.detail.plyr.error)
-			setError(true)
-		});
+		let timer
+		// player.on('error', (event:any) => {
+		// 	console.log("error is happening")
+		// 	console.log("event happens" ,event.detail.plyr.error)
+		// 	setError(true)
+		// });
 		player.on('ready',(event:any)=> {
 			console.log("ready is happening")
 			setError(false)
