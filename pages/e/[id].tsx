@@ -21,13 +21,13 @@ export default function Embed(props:any) {
       if (res.getUserData.premium) {
       return setLoading(false)
       } else {
-        router.replace('/404')
-        return
+      router.replace('/404')
+      return
 
     }
     }).catch((e) => {
       console.log(e.message)
-      router.replace('/404')
+      // router.replace('/404')
     })
 
   },[router])
