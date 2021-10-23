@@ -1,10 +1,10 @@
-import { CircularProgressProps, circularProgressClasses, CircularProgress, Box } from "@mui/material";
+import { CircularProgressProps, circularProgressClasses, CircularProgress, Box, Button } from "@mui/material";
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { checkPremiumQuery } from "../../src/api/graphql-req/checkPremium";
 import { embedSubQuery } from "../../src/api/graphql-req/embedSub";
 import Player from "../../src/components/player";
-
+import JsFileDownloader from 'js-file-downloader';
 export default function Embed(props:any) {
   const router:NextRouter = useRouter()
   const [loading,setLoading] = useState(true)
@@ -44,10 +44,16 @@ export default function Embed(props:any) {
 
   },[router])
 
+  async function download() {
+  //  new JsFileDownloader({ url: "https://plyr.eiga.sbs/vtt/%5BSubtitleTools.com%5D%20theboys-s1-e2.vtt" })
+   new JsFileDownloader({ url: "https://plyr.eiga.sbs/vtt/%5BSubtitleTools.com%5D%20theboys-s1-e2.vtt",contentType:'application/octet-stream' })
+
+  }
   if (router.isFallback||loading||subLoading) return <FacebookCircularProgress/>
 	return (
 		<div>
       <Player textTrack={subtitle} uuid={props.params.id}/>
+      <Button onClick={download}>HIII</Button>
 		</div>
 	)
 }

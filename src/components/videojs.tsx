@@ -18,19 +18,11 @@ export const VideoJS = ( props:{options:any,onReady:any} ) => {
       const player = playerRef.current = videojs(videoElement, options, () => {
         console.log("player is ready");
         onReady && onReady(player);
+        player.addRemoteTextTrack({src:'https://plyr.eiga.sbs/vtt/%5BSubtitleTools.com%5D%20theboys-s1-e2.vtt', kind:'captions', srclang: 'en', label: 'English'},false)
+        
       });
+      console.log("texttrack is",playerRef.current.textTracks())
     } else {
-      let tracks = playerRef.current.textTracks();
-
-for (let i = 0; i < tracks.length; i++) {
-  let track = tracks[i];
-  console.log("ahhsdflasdflk",track)
-
-  // Find the English captions track and mark it as "showing".
-  if (track.kind === 'captions') {
-    track.mode = 'showing';
-  }
-}
       // you can update player here [update player through props]
       // const player = playerRef.current;
       // player.autoplay(options.autoplay);
@@ -50,7 +42,8 @@ for (let i = 0; i < tracks.length; i++) {
 
   return (
     <div data-vjs-player>
-      <video ref={videoRef} className="video-js vjs-big-play-centered"/>
+      <video ref={videoRef} className="video-js vjs-big-play-centered">
+      </video>
     </div>
   );
 }
