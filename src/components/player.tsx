@@ -3,14 +3,16 @@ import React from 'react';
 import { VideoJsPlayer } from 'video.js';
 import VideoJS from './videojs';
 
-export default function Player({uuid}:{uuid:string}){
+export default function Player({uuid,textTrack}:{uuid:string,textTrack:string}){
   const playerRef = React.useRef<VideoJsPlayer|null>(null);
-
+  
   const videoJsOptions = { // lookup the options in the docs for more options
     autoplay: false,
     controls: true,
+    preload:false,
     responsive: true,
     fluid: true,
+    tracks: [{src:`https://plyr.eiga.sbs/vtt/${textTrack}.vtt`, kind:'captions', srclang: 'en', label: 'English'}],
     sources: [{
       src: `https://plyr.eiga.sbs/${uuid}.mp4`,
       type: 'video/mp4'

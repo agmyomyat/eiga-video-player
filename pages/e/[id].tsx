@@ -2,26 +2,38 @@ import { CircularProgressProps, circularProgressClasses, CircularProgress, Box }
 import { NextRouter, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { checkPremiumQuery } from "../../src/api/graphql-req/checkPremium";
+import { embedSubQuery } from "../../src/api/graphql-req/embedSub";
 import Player from "../../src/components/player";
 
 export default function Embed(props:any) {
   const router:NextRouter = useRouter()
   const [loading,setLoading] = useState(true)
+  const [subtitle, setSubtitle] = useState('')
+  const [subLoading,setSubLoading] = useState(true)
   useEffect(() => {
     if(!router.isReady||router.isFallback)return 
     console.log("router readey",router.isReady)
     if (router.isReady&& !router.query.token) {
       console.log("props", router.query)
       console.log("it fucking")
-      router.replace('/404')
-      return
+      // router.replace('/404')
+      setLoading(false)
     }
+    embedSubQuery({ eigaLink: (router.query.id as string) }).then((res) => {
+      setSubtitle(res.embedVideos[0].eng_sub)
+      console.log("asdflsadfl",res)
+      setSubLoading(false)
+    }).catch(e => {
+      console.log(e.message)
+      setSubLoading(false)
+    })
     checkPremiumQuery(router.query.token as string).then((res) => {
       console.log("result",res)
       if (res.getUserData.premium) {
       return setLoading(false)
       } else {
-      router.replace('/404')
+      setLoading(false)
+      // router.replace('/404')
       return
 
     }
@@ -32,10 +44,10 @@ export default function Embed(props:any) {
 
   },[router])
 
-  if (router.isFallback||loading) return <FacebookCircularProgress/>
+  if (router.isFallback||loading||subLoading) return <FacebookCircularProgress/>
 	return (
 		<div>
-      <Player uuid={props.params.id}/>
+      <Player textTrack={subtitle} uuid={props.params.id}/>
 		</div>
 	)
 }

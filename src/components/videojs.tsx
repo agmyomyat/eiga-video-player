@@ -7,7 +7,7 @@ export const VideoJS = ( props:{options:any,onReady:any} ) => {
 
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const playerRef = React.useRef<VideoJsPlayer|null>(null);
-  const { options, onReady } = props;
+  const { options, onReady} = props;
 
   React.useEffect(() => {
     // make sure Video.js player is only initialized once
@@ -20,6 +20,17 @@ export const VideoJS = ( props:{options:any,onReady:any} ) => {
         onReady && onReady(player);
       });
     } else {
+      let tracks = playerRef.current.textTracks();
+
+for (let i = 0; i < tracks.length; i++) {
+  let track = tracks[i];
+  console.log("ahhsdflasdflk",track)
+
+  // Find the English captions track and mark it as "showing".
+  if (track.kind === 'captions') {
+    track.mode = 'showing';
+  }
+}
       // you can update player here [update player through props]
       // const player = playerRef.current;
       // player.autoplay(options.autoplay);
@@ -39,7 +50,7 @@ export const VideoJS = ( props:{options:any,onReady:any} ) => {
 
   return (
     <div data-vjs-player>
-      <video ref={videoRef} className="video-js vjs-big-play-centered" />
+      <video ref={videoRef} className="video-js vjs-big-play-centered"/>
     </div>
   );
 }
