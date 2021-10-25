@@ -12,6 +12,7 @@ export default function Player({uuid,textTrack}:{uuid:string,textTrack:string}){
     preload:'metadata',
     responsive: true,
     fluid: true,
+    tracks:[{src:`https://plyr.eiga.sbs/vtt/${textTrack}.vtt`, kind:'captions', srclang: 'en', label: 'English'}],
     sources: [{
       src: `https://plyr.eiga.sbs/${uuid}.mp4`,
       type: 'video/mp4'

@@ -5,6 +5,8 @@ import { checkPremiumQuery } from "../../src/api/graphql-req/checkPremium";
 import { embedSubQuery } from "../../src/api/graphql-req/embedSub";
 import Player from "../../src/components/player";
 import JsFileDownloader from 'js-file-downloader';
+import axios, { CancelTokenSource } from "axios";
+import fileDownload from "js-file-download";
 export default function Embed(props:any) {
   const router:NextRouter = useRouter()
   const [loading,setLoading] = useState(true)
@@ -44,16 +46,23 @@ export default function Embed(props:any) {
 
   },[router])
 
-  async function download() {
-  //  new JsFileDownloader({ url: "https://plyr.eiga.sbs/vtt/%5BSubtitleTools.com%5D%20theboys-s1-e2.vtt" })
-   new JsFileDownloader({ url: "https://plyr.eiga.sbs/vtt/%5BSubtitleTools.com%5D%20theboys-s1-e2.vtt",contentType:'application/octet-stream' })
+  // const jsFileDl= new JsFileDownloader({ url: "https://apidevurn.b-cdn.net/9f797fab-8dab-472a-86ef-d9b8ec5db9f6.mp4", contentType: 'application/octet-stream',autoStart:false })
 
-  }
+  async function download() {
+    axios({
+  url: 'https://apidevurn.b-cdn.net/2f1a8706-b396-4f9d-b522-e2e243ce7866.mp4',
+  method: 'GET',
+  responseType: 'blob', // Important
+}).then((response) => {
+    fileDownload(response.data, 'report.mp4');
+})
+  } 
+
   if (router.isFallback||loading||subLoading) return <FacebookCircularProgress/>
 	return (
 		<div>
       <Player textTrack={subtitle} uuid={props.params.id}/>
-      <Button onClick={download}>HIII</Button>
+      <Button onClick={download}>download</Button>
 		</div>
 	)
 }
