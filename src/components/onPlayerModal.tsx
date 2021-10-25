@@ -8,8 +8,7 @@ import Typography from '@mui/material/Typography'
 import CircularProgress, {
    CircularProgressProps,
 } from '@mui/material/CircularProgress'
-import { Stack } from '@mui/material'
-
+import { Stack, useMediaQuery } from '@mui/material'
 const style = {
    position: 'absolute' as 'absolute',
    top: '50%',
@@ -75,6 +74,7 @@ export default function OnPlayerModal({
       return setOpen(false), setMessage(''), setConfirmDL(false)
    }
    function Child() {
+      const matches = useMediaQuery('(min-width:600px)')
       if (message)
          return (
             <>
@@ -90,6 +90,7 @@ export default function OnPlayerModal({
                      handleClose()
                   }}
                   variant="outlined"
+                  size="small"
                >
                   Close
                </Button>
@@ -107,11 +108,12 @@ export default function OnPlayerModal({
                </Typography>
                <CircularProgressWithLabel value={progress} />
                <Button
-                  sx={{ ml: '80%' }}
+                  sx={{ ml: matches ? '80%' : 0 }}
                   onClick={() => {
                      cancelDownload()
                      setMessage('Download Cancelled')
                   }}
+                  size="small"
                   variant="outlined"
                >
                   Cancel
@@ -168,6 +170,7 @@ export default function OnPlayerModal({
                      handleClose()
                   }}
                   variant="outlined"
+                  size="small"
                >
                   Play
                </Button>
@@ -175,6 +178,7 @@ export default function OnPlayerModal({
                   onClick={() => setConfirmDL(true)}
                   variant="outlined"
                   href="#outlined-buttons"
+                  size="small"
                >
                   Download- {fileSize}
                </Button>
