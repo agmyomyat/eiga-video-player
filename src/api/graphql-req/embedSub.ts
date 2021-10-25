@@ -5,6 +5,7 @@ const embedSub = gql`
 query EmbedVideos($eigaLink:String!){
   embedVideos(where:{eigaLink:$eigaLink}){
     eng_sub
+    fileSize
   }
 }
 `
