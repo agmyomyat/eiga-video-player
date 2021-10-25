@@ -28,7 +28,7 @@ function CircularProgressWithLabel(
          <CircularProgress variant="determinate" {...props} />
          <Box
             sx={{
-               top: 0,
+               top: 12,
                left: 0,
                bottom: 0,
                right: 0,
@@ -130,7 +130,7 @@ export default function OnPlayerModal({
                </Typography>
                <Typography
                   id="transition-modal-description"
-                  sx={{ mt: 2, mb: 3 }}
+                  sx={{ mt: 2, mb: 3, fontSize: 15 }}
                >
                   If you are ios user, make sure your ios version is 14.8 or
                   higher and we recommend using safari to download.do you want
@@ -142,14 +142,16 @@ export default function OnPlayerModal({
                         download()
                         setConfirmDL(false)
                      }}
+                     size="small"
                      variant="outlined"
                   >
-                     Yes Download it Already
+                     Download
                   </Button>
                   <Button
                      onClick={() => {
                         handleClose()
                      }}
+                     size="small"
                      variant="outlined"
                   >
                      No

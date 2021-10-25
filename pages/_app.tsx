@@ -3,13 +3,15 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";
 import { ThemeProvider, createTheme } from "@mui/material";
+import { responsiveFontSizes } from '@mui/material'
 // import { useRouter } from "next/router";
 // import { useUser } from "../src/global-states/useUser";
 // import { isServer } from "../src/helpers/isServer";
 // import { getAccessToken } from "../src/share/token";
 // import shallow from "zustand/shallow";
 
-const theme = createTheme();
+let theme = createTheme()
+theme = responsiveFontSizes(theme)
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// const { user, userCheck } = useUser(
