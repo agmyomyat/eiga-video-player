@@ -132,8 +132,9 @@ export default function OnPlayerModal({
                   id="transition-modal-description"
                   sx={{ mt: 2, mb: 3 }}
                >
-                  If you are ios user we recommend using safari to download.do
-                  you want to continue?
+                  If you are ios user, make sure your ios version is 14.8 or
+                  higher and we recommend using safari to download.do you want
+                  to continue? Do not forget to turn off VPN either.
                </Typography>
                <Stack direction="row" spacing={5}>
                   <Button
