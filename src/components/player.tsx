@@ -82,17 +82,21 @@ export default function Player({
 
    const handlePlayerReady = (player: VideoJsPlayer) => {
       playerRef.current = player
-
       setOpen(true)
       // you can handle player events here
       player.on('waiting', () => {
          console.log('player is waiting')
+         setOpen(false)
       })
-
+      player.on('playing', () => {
+         console.log('playing')
+         setOpen(false)
+      })
       player.on('dispose', () => {
          console.log('player will dispose')
       })
       player.on('pause', () => {
+         console.log('pause')
          setOpen(true)
       })
    }

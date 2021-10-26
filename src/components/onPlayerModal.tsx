@@ -73,8 +73,8 @@ export default function OnPlayerModal({
    const handleClose = () => {
       return setOpen(false), setMessage(''), setConfirmDL(false)
    }
+   const matches = useMediaQuery('(min-width:600px)')
    function Child() {
-      const matches = useMediaQuery('(min-width:600px)')
       if (message)
          return (
             <>
@@ -188,7 +188,7 @@ export default function OnPlayerModal({
    }
 
    return (
-      <div>
+      <div style={{ width: '100%' }}>
          <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
