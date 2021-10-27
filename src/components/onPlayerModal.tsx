@@ -115,8 +115,8 @@ export default function OnPlayerModal({
                   variant={`${matches ? 'body1' : 'caption'}`}
                >
                   If you are ios user, make sure your ios version is 14.8 or
-                  higher and we recommend using safari to download. Do you want
-                  to continue? Do not forget to turn off VPN either.
+                  higher and we recommend using safari to download.Do not forget to turn off VPN either.Do you want
+                  to continue? 
                </Typography>
 
                <Box
