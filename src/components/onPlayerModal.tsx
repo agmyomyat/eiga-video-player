@@ -13,17 +13,8 @@ import { alpha } from '@mui/material/styles'
 import LinearProgress, {
    LinearProgressProps,
 } from '@mui/material/LinearProgress'
-import { Stack, useMediaQuery } from '@mui/material'
-const style = {
-   position: 'absolute' as 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   width: 'auto',
-   bgcolor: 'background.paper',
-   boxShadow: 24,
-   p: 4,
-}
+import { useMediaQuery } from '@mui/material'
+
 function LinearProgressWithLabel(
    props: LinearProgressProps & { value: number }
 ) {
@@ -68,8 +59,8 @@ export default function OnPlayerModal({
    const handleClose = () => {
       return setOpen(false), setMessage(''), setConfirmDL(false)
    }
+   const matches = useMediaQuery('(min-width:600px)')
    function Child() {
-      const matches = useMediaQuery('(min-width:600px)')
       if (message)
          return (
             <Alert
@@ -119,16 +110,15 @@ export default function OnPlayerModal({
                   // py: { sm: 3 },
                }}
             >
-               <Box>
-                  <Typography
-                     id="transition-modal-description"
-                     variant={`${matches ? 'body1' : 'caption'}`}
-                  >
-                     If you are ios user, make sure your ios version is 14.8 or
-                     higher and we recommend using safari to download. Do you
-                     want to continue? Do not forget to turn off VPN either.
-                  </Typography>
-               </Box>
+               <Typography
+                  id="transition-modal-description"
+                  variant={`${matches ? 'body1' : 'caption'}`}
+               >
+                  If you are ios user, make sure your ios version is 14.8 or
+                  higher and we recommend using safari to download. Do you want
+                  to continue? Do not forget to turn off VPN either.
+               </Typography>
+
                <Box
                   sx={{
                      py: {
