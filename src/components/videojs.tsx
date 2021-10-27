@@ -2,6 +2,8 @@
 import React from 'react'
 import videojs, { VideoJsPlayer } from 'video.js'
 import 'video.js/dist/video-js.css'
+import { Box } from '@mui/material'
+
 export const VideoJS = (props: { options: any; onReady: any }) => {
    const videoRef = React.useRef<HTMLVideoElement | null>(null)
    const playerRef = React.useRef<VideoJsPlayer | null>(null)
@@ -41,12 +43,12 @@ export const VideoJS = (props: { options: any; onReady: any }) => {
    }, [])
 
    return (
-      <div data-vjs-player>
+      <Box data-vjs-player>
          <video
             ref={videoRef}
             className="video-js vjs-big-play-centered"
          ></video>
-      </div>
+      </Box>
    )
 }
 

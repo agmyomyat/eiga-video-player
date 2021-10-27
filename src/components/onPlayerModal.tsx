@@ -1,13 +1,18 @@
 import * as React from 'react'
-import Backdrop from '@mui/material/Backdrop'
 import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
+import Paper from '@mui/material/Paper'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import CircularProgress, {
-   CircularProgressProps,
-} from '@mui/material/CircularProgress'
+import IconButton from '@mui/material/IconButton'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import DownloadIcon from '@mui/icons-material/Download'
+import { alpha } from '@mui/material/styles'
+import LinearProgress, {
+   LinearProgressProps,
+} from '@mui/material/LinearProgress'
 import { Stack, useMediaQuery } from '@mui/material'
 const style = {
    position: 'absolute' as 'absolute',
@@ -19,33 +24,23 @@ const style = {
    boxShadow: 24,
    p: 4,
 }
-function CircularProgressWithLabel(
-   props: CircularProgressProps & { value: number }
+function LinearProgressWithLabel(
+   props: LinearProgressProps & { value: number }
 ) {
    return (
-      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-         <CircularProgress variant="determinate" {...props} />
-         <Box
-            sx={{
-               top: 12,
-               left: 0,
-               bottom: 0,
-               right: 0,
-               position: 'absolute',
-               display: 'flex',
-               alignItems: 'center',
-               justifyContent: 'center',
-            }}
-         >
-            <Typography
-               variant="caption"
-               component="div"
-               color="text.secondary"
-            >{`${Math.round(props.value)}%`}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+         <Box sx={{ width: '100%', mr: 1 }}>
+            <LinearProgress variant="determinate" {...props} />
+         </Box>
+         <Box sx={{ minWidth: 35 }}>
+            <Typography variant="body2" color="text.secondary">{`${Math.round(
+               props.value
+            )}%`}</Typography>
          </Box>
       </Box>
    )
 }
+
 export default function OnPlayerModal({
    downloading,
    cancelDownload,
@@ -77,134 +72,168 @@ export default function OnPlayerModal({
       const matches = useMediaQuery('(min-width:600px)')
       if (message)
          return (
-            <>
-               <Typography
-                  id="transition-modal-title"
-                  variant="h6"
-                  component="h2"
-               >
-                  {message}
-               </Typography>
-               <Button
-                  onClick={() => {
-                     handleClose()
-                  }}
-                  variant="outlined"
-                  size="small"
-               >
-                  Close
-               </Button>
-            </>
+            <Alert
+               severity="info"
+               onClose={() => {
+                  handleClose()
+               }}
+            >
+               <AlertTitle>{message}</AlertTitle>
+            </Alert>
          )
       if (downloading)
          return (
-            <>
-               <Typography
-                  id="transition-modal-title"
-                  variant="h6"
-                  component="h2"
+            <Alert severity="info">
+               <AlertTitle>Downloading... Do Not Close the Window!</AlertTitle>
+               <Box py={1} pb={{ sm: 2 }}>
+                  <LinearProgressWithLabel value={progress} />
+               </Box>
+               <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  mr={2}
                >
-                  Downloading... Do Not Close the Window!
-               </Typography>
-               <CircularProgressWithLabel value={progress} />
-               <Button
-                  sx={{ ml: matches ? '80%' : 0 }}
-                  onClick={() => {
-                     cancelDownload()
-                     setMessage('Download Cancelled')
-                  }}
-                  size="small"
-                  variant="outlined"
-               >
-                  Cancel
-               </Button>
-            </>
+                  <Button
+                     onClick={() => {
+                        cancelDownload()
+                        setMessage('Download Cancelled')
+                     }}
+                     size="small"
+                     variant="contained"
+                  >
+                     cancel
+                  </Button>
+               </Box>
+            </Alert>
          )
       if (confirmDL)
          return (
-            <>
-               <Typography
-                  id="transition-modal-title"
-                  variant="h6"
-                  component="h2"
-               >
-                  Warning!
-               </Typography>
-               <Typography
-                  id="transition-modal-description"
-                  sx={{ mt: 2, mb: 3, fontSize: 15 }}
-               >
-                  If you are ios user, make sure your ios version is 14.8 or
-                  higher and we recommend using safari to download.do you want
-                  to continue? Do not forget to turn off VPN either.
-               </Typography>
-               <Stack direction="row" spacing={5}>
-                  <Button
-                     onClick={() => {
-                        download()
-                        setConfirmDL(false)
-                     }}
-                     size="small"
-                     variant="outlined"
+            <Alert
+               // variant="filled"
+               severity="warning"
+               sx={{
+                  overflow: 'auto',
+                  width: 1,
+                  maxHeight: 150,
+                  // py: { sm: 3 },
+               }}
+            >
+               <Box>
+                  <Typography
+                     id="transition-modal-description"
+                     variant={`${matches ? 'body1' : 'caption'}`}
                   >
-                     Download
-                  </Button>
+                     If you are ios user, make sure your ios version is 14.8 or
+                     higher and we recommend using safari to download. Do you
+                     want to continue? Do not forget to turn off VPN either.
+                  </Typography>
+               </Box>
+               <Box
+                  sx={{
+                     py: {
+                        xs: 1,
+                        sm: 2,
+                     },
+                  }}
+               >
                   <Button
                      onClick={() => {
                         handleClose()
                      }}
                      size="small"
                      variant="outlined"
+                     color="warning"
+                     sx={{
+                        mr: 2,
+                     }}
                   >
-                     No
+                     cancel
                   </Button>
-               </Stack>
-            </>
+                  <Button
+                     onClick={() => {
+                        download()
+                        setConfirmDL(false)
+                     }}
+                     size="small"
+                     variant="contained"
+                     color="warning"
+                  >
+                     Download
+                  </Button>
+               </Box>
+            </Alert>
          )
       if (!confirmDL && !message)
          return (
-            <Stack direction="row" spacing={5}>
-               <Button
+            <>
+               <IconButton
                   onClick={async () => {
                      await play()
                      handleClose()
                   }}
-                  variant="outlined"
-                  size="small"
+                  // size="large"
+                  // color="primary"
                >
-                  Play
-               </Button>
-               <Button
-                  onClick={() => setConfirmDL(true)}
-                  variant="outlined"
-                  href="#outlined-buttons"
-                  size="small"
-               >
-                  Download- {fileSize}
-               </Button>
-            </Stack>
+                  <PlayArrowIcon
+                     sx={{
+                        fontSize: (theme) => theme.typography.h1.fontSize,
+                        color: (theme) => theme.palette.common.white,
+                        bgcolor: (theme) => theme.palette.common.black,
+                        borderRadius: '50%',
+                     }}
+                  />
+               </IconButton>
+               <Box position="absolute" bottom="5%" right="5%">
+                  <IconButton
+                     onClick={() => setConfirmDL(true)}
+                     color="primary"
+                  >
+                     <DownloadIcon
+                        sx={{
+                           fontSize: (theme) => theme.typography.h3.fontSize,
+                        }}
+                     />
+                  </IconButton>
+               </Box>
+            </>
          )
       return null
    }
 
    return (
-      <div>
-         <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={open}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-               timeout: 500,
-            }}
-         >
-            <Fade in={open}>
-               <Box sx={style}>
-                  <Child />
-               </Box>
-            </Fade>
-         </Modal>
-      </div>
+      <>
+         {open && (
+            <Paper
+               sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: 1,
+                  height: 1,
+                  zIndex: 1000,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // bgcolor: 'transparent',
+                  bgcolor: (theme) => alpha(theme.palette.common.black, 0.85),
+               }}
+               elevation={0}
+            >
+               <Fade in={open}>
+                  <Box
+                     sx={{
+                        p: 1,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                     }}
+                  >
+                     <Child />
+                  </Box>
+               </Fade>
+            </Paper>
+         )}
+      </>
    )
 }

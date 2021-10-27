@@ -4,6 +4,7 @@ import OnPlayerModal from './onPlayerModal'
 import VideoJS from './videojs'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
+import { Box } from '@mui/material'
 let cancelAxioToken: CancelTokenSource
 export default function Player({
    uuid,
@@ -21,6 +22,7 @@ export default function Player({
    const [progress, setProgress] = React.useState(0)
    const [modalMessage, setModalMessage] = React.useState('')
    const [downloading, setDownloading] = React.useState(false)
+
    React.useEffect(() => {
       console.log('message is ', modalMessage)
    }, [modalMessage])
@@ -98,7 +100,7 @@ export default function Player({
    }
 
    return (
-      <>
+      <Box position="relative">
          <OnPlayerModal
             play={() => playerRef.current?.play()}
             fileSize={fileSize}
@@ -112,6 +114,6 @@ export default function Player({
             setOpen={setOpen}
          />
          <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
-      </>
+      </Box>
    )
 }
