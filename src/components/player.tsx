@@ -37,7 +37,7 @@ export default function Player({
       controls: true,
       preload: 'metadata',
       responsive: true,
-      fluid: true,
+      aspectRatio: '16:9',
       tracks: [
          {
             src: `https://plyr.eiga.sbs/vtt/${textTrack}.vtt`,
