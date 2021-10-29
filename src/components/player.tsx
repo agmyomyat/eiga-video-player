@@ -94,6 +94,9 @@ export default function Player({
          console.log('playing')
          setOpen(false)
       })
+      player.on('seeking', () => {
+         setOpen(false)
+      })
       player.on('dispose', () => {
          console.log('player will dispose')
       })
