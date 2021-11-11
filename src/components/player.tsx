@@ -40,7 +40,7 @@ export default function Player({
       aspectRatio: '16:9',
       tracks: [
          {
-            src: `https://plyr.eiga.sbs/vtt/${textTrack}.vtt`,
+            src: `https://fcdn.eiga.sbs/vtt/${textTrack}.vtt`,
             kind: 'captions',
             srclang: 'en',
             label: 'English',
@@ -48,7 +48,7 @@ export default function Player({
       ],
       sources: [
          {
-            src: `https://plyr.eiga.sbs/${uuid}.mp4`,
+            src: `https://fcdn.eiga.sbs/${uuid}.mp4`,
             type: 'video/mp4',
          },
       ],
