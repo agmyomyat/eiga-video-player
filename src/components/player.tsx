@@ -36,6 +36,7 @@ export default function Player({
          const Plyr = require('plyr')
          const css = require('plyr/dist/plyr.css')
          const player = new Plyr('#player', {
+            ratio: '16:9',
             controls: [
                'play-large', // The large play button in the center
                'rewind', // Rewind by the seek time (default 10 seconds)
