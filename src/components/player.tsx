@@ -84,7 +84,7 @@ export default function Player({
                   kind: 'captions',
                   label: 'English',
                   srclang: 'en',
-                  src: `https://fcdn.rosestream.watch/vtt/${textTrack}.vtt`,
+                  src: `https://fcdn.rosestream.watch/vtt/${textTrack}.srt`,
                   default: true,
                },
             ],
