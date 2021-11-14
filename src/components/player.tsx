@@ -4,6 +4,7 @@ import OnPlayerModal from './onPlayerModal'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
+import './plyr.css'
 let cancelAxioToken: CancelTokenSource
 export default function Player({
    uuid,
@@ -23,6 +24,24 @@ export default function Player({
    const [downloading, setDownloading] = React.useState(false)
 
    React.useEffect(() => {
+      const myVideo = document.getElementById('plyrPlayer')
+      if (!myVideo) return
+      myVideo.addEventListener(
+         'webkitbeginfullscreen webkitendfullscreen',
+         (event) => {
+            if (event.type === 'webkitbeginfullscreen') {
+               document.documentElement.style.setProperty(
+                  '--webkit-text-track-display',
+                  'block'
+               )
+            } else {
+               document.documentElement.style.setProperty(
+                  '--webkit-text-track-display',
+                  'none'
+               )
+            }
+         }
+      )
       console.log('message is ', modalMessage)
    }, [modalMessage])
 
@@ -34,7 +53,7 @@ export default function Player({
       useEffect(() => {
          const Plyr = require('plyr')
          const css = require('plyr/dist/plyr.css')
-         const player = new Plyr('#player', {
+         const player = new Plyr('#plyrPlayer', {
             ratio: '16:9',
             controls: [
                'play-large', // The large play button in the center
