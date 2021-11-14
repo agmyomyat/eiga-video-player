@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js'
 import OnPlayerModal from './onPlayerModal'
-import VideoJS from './videojs'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
@@ -52,6 +51,7 @@ export default function Player({
                'fullscreen', // Toggle fullscreen
                'download',
             ],
+            fullscreen: { iosNative: true },
          })
          // player.on('pause', (e: any) => {
          //    console.log(' player pause', e)
@@ -129,30 +129,6 @@ export default function Player({
             setModalMessage('your request cancelled or network error')
             console.error(e.message)
          })
-   }
-
-   const handlePlayerReady = (player: VideoJsPlayer) => {
-      playerRef.current = player
-      setOpen(true)
-      // you can handle player events here
-      player.on('waiting', () => {
-         console.log('player is waiting')
-         setOpen(false)
-      })
-      player.on('playing', () => {
-         console.log('playing')
-         setOpen(false)
-      })
-      player.on('seeking', () => {
-         setOpen(false)
-      })
-      player.on('dispose', () => {
-         console.log('player will dispose')
-      })
-      player.on('pause', () => {
-         console.log('pause')
-         setOpen(true)
-      })
    }
 
    return (
