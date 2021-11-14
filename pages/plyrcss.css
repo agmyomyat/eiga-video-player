@@ -3,3 +3,8 @@
 .plyr--full-ui ::-webkit-media-text-track-container {
     display: var(--webkit-text-track-display);
 }
+@media (--tablet) {
+  .plyr--full-ui ::-webkit-media-text-track-container {
+    display: block;
+  }
+}
