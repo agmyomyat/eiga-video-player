@@ -1,0 +1,5 @@
+:root { --webkit-text-track-display: none; }
+
+.plyr--full-ui ::-webkit-media-text-track-container {
+    display: var(--webkit-text-track-display);
+}
