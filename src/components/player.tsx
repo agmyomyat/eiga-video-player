@@ -4,7 +4,6 @@ import OnPlayerModal from './onPlayerModal'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
-import './plyr.css'
 let cancelAxioToken: CancelTokenSource
 export default function Player({
    uuid,
@@ -112,7 +111,7 @@ export default function Player({
       return (
          <video
             className="plyr__video-embed"
-            id="player"
+            id="plyrPlayer"
             crossOrigin=""
             controls
             data-plyr-config='{ "title": "Example Title" }'

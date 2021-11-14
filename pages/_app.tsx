@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { responsiveFontSizes } from '@mui/material'
+import './plyrcss.css'
 // import { useRouter } from "next/router";
 // import { useUser } from "../src/global-states/useUser";
 // import { isServer } from "../src/helpers/isServer";
