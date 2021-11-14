@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { VideoJsPlayer, VideoJsPlayerOptions } from 'video.js'
 import OnPlayerModal from './onPlayerModal'
 import VideoJS from './videojs'
@@ -31,28 +31,76 @@ export default function Player({
       setProgress(Math.round((99 * event.loaded) / event.total))
    }
 
-   const videoJsOptions: VideoJsPlayerOptions = {
-      // lookup the options in the docs for more options
-      autoplay: false,
-      controls: true,
-      preload: 'metadata',
-      responsive: true,
-      aspectRatio: '16:9',
-      tracks: [
-         {
-            src: `https://fcdn.rosestream.watch/vtt/${textTrack}.vtt`,
-            kind: 'captions',
-            srclang: 'en',
-            label: 'English',
-         },
-      ],
-      sources: [
-         {
-            src: `https://fcdn.rosestream.watch/${uuid}.mp4`,
-            type: 'video/mp4',
-         },
-      ],
+   const PlyrFC = () => {
+      useEffect(() => {
+         const Plyr = require('plyr')
+         const css = require('plyr/dist/plyr.css')
+         const player = new Plyr('#player', {
+            controls: [
+               'play-large', // The large play button in the center
+               'rewind', // Rewind by the seek time (default 10 seconds)
+               'play', // Play/pause playback
+               'fast-forward', // Fast forward by the seek time (default 10 seconds)
+               'progress', // The progress bar and scrubber for playback and buffering
+               'current-time', // The current time of playback
+               'duration', // The full duration of the media
+               'volume', // Volume control
+               'captions', // Toggle captions
+               'settings', // Settings menu
+               'airplay', // Airplay (currently Safari only)
+               'fullscreen', // Toggle fullscreen
+               'download',
+            ],
+         })
+         // player.on('pause', (e: any) => {
+         //    console.log(' player pause', e)
+         //    setOpen(true)
+         // })
+         // player.on('seeking', (e: any) => {
+         //    console.log(' player seeking', e)
+         //    setOpen(false)
+         // })
+         // player.on('playing', (e: any) => {
+         //    console.log(' player playing', e)
+         //    setOpen(false)
+         // })
+
+         player.on('error', (e: any) => {
+            console.log('player occuring error', e)
+         })
+         player.source = {
+            type: 'video',
+            title: 'Example title',
+            sources: [
+               {
+                  src: `https://fcdn.rosestream.watch/${uuid}.mp4`,
+                  type: 'video/mp4',
+                  size: 1080,
+               },
+            ],
+            tracks: [
+               {
+                  kind: 'captions',
+                  label: 'English',
+                  srclang: 'en',
+                  src: `https://fcdn.rosestream.watch/vtt/${textTrack}.vtt`,
+                  default: true,
+               },
+            ],
+         }
+      }, [])
+
+      return (
+         <video
+            className="plyr__video-embed"
+            id="player"
+            crossOrigin=""
+            controls
+            data-plyr-config='{ "title": "Example Title" }'
+         ></video>
+      )
    }
+
    function cancelDownload() {
       if (cancelAxioToken) cancelAxioToken.cancel()
    }
@@ -120,7 +168,8 @@ export default function Player({
             open={open}
             setOpen={setOpen}
          />
-         <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+         {/* <VideoJS options={videoJsOptions} onReady={handlePlayerReady} /> */}
+         <PlyrFC />
       </Box>
    )
 }

@@ -149,7 +149,7 @@ export default function OnPlayerModal({
                      variant="contained"
                      color="warning"
                   >
-                     Download {fileSize}-MB
+                     Download {fileSize}
                   </Button>
                </Box>
             </Alert>
