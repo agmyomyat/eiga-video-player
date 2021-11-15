@@ -5,6 +5,7 @@ import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
 let cancelAxioToken: CancelTokenSource
+
 export default function Player({
    uuid,
    textTrack,
@@ -23,26 +24,21 @@ export default function Player({
    const [downloading, setDownloading] = React.useState(false)
 
    React.useEffect(() => {
-      const myVideo = document.getElementById('plyrPlayer')
+      const myVideo = document.querySelector('video')
       if (!myVideo) return
-      myVideo.addEventListener(
-         'webkitbeginfullscreen webkitendfullscreen',
-         (event) => {
-            if (event.type === 'webkitbeginfullscreen') {
-               document.documentElement.style.setProperty(
-                  '--webkit-text-track-display',
-                  'block'
-               )
-            } else {
-               document.documentElement.style.setProperty(
-                  '--webkit-text-track-display',
-                  'none'
-               )
-            }
-         }
-      )
-      console.log('message is ', modalMessage)
-   }, [modalMessage])
+      myVideo.addEventListener('webkitbeginfullscreen', () => {
+         document.documentElement.style.setProperty(
+            '--webkit-text-track-display',
+            'block'
+         )
+      })
+      myVideo.addEventListener('webkitendfullscreen', () => {
+         document.documentElement.style.setProperty(
+            '--webkit-text-track-display',
+            'none'
+         )
+      })
+   }, [])
 
    function onDownloadProgress(event: ProgressEvent) {
       setProgress(Math.round((99 * event.loaded) / event.total))
@@ -70,6 +66,7 @@ export default function Player({
                'download',
             ],
             fullscreen: { iosNative: true },
+            captions: { active: true },
          })
          // player.on('pause', (e: any) => {
          //    console.log(' player pause', e)

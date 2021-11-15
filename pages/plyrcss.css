@@ -1,10 +1,13 @@
-:root { --webkit-text-track-display: none; }
+:root {
+   --webkit-text-track-display: none;
+}
 
 .plyr--full-ui ::-webkit-media-text-track-container {
-    display: var(--webkit-text-track-display);
+   display: var(--webkit-text-track-display) !important;
 }
+
 @media (--tablet) {
-  .plyr--full-ui ::-webkit-media-text-track-container {
-    display: block;
-  }
+   .plyr--full-ui ::-webkit-media-text-track-container {
+      display: block !important;
+   }
 }
