@@ -92,7 +92,7 @@ export default function Player({
             title: 'Example title',
             sources: [
                {
-                  src: `https://fcdn.rosestream.watch/${uuid}.mp4`,
+                  src: `https://fcdn.rosestream.watch/https://fcdn.rosestream.watch/556f3be6-22b1-4fef-8751-eabb38040494.mp4`,
                   type: 'video/mp4',
                   size: 1080,
                },
@@ -102,7 +102,7 @@ export default function Player({
                   kind: 'captions',
                   label: 'English',
                   srclang: 'en',
-                  src: `https://fcdn.rosestream.watch/vtt/${textTrack}.vtt`,
+                  src: `https://fcdn.rosestream.watch/vtt/liarliar.vtt`,
                },
             ],
          }
