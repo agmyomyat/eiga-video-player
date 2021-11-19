@@ -4,8 +4,7 @@ import { getAccessToken, setAccessToken } from "../src/share/token";
 import { useRouter } from "next/router";
 import { useUser } from "../src/global-states/useUser";
 import shallow from "zustand/shallow";
-import { useCallback, useEffect } from "react";
-import { RsvpTwoTone } from "@mui/icons-material";
+import { useCallback, useEffect } from 'react'
 const Home: NextPage = (prop) => {
 	const { replace } = useRouter();
 	const { logOut, userVerify, user, userCheck } = useUser(
