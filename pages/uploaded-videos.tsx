@@ -15,6 +15,16 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import FolderIcon from '@mui/icons-material/Folder'
 import DeleteIcon from '@mui/icons-material/Delete'
+import {
+   getEmbedVideos2Query,
+   getEmbedVideosQuery,
+} from '../src/api/graphql-req/getEmbedVideos'
+import { useUser } from '../src/global-states/useUser'
+import axios from 'axios'
+import {
+   deleteEmbed1Mutate,
+   deleteEmbed2Mutate,
+} from '../src/api/graphql-req/deleteEmbed'
 
 function generate(element: React.ReactElement) {
    return [0, 1, 2].map((value) =>
@@ -30,8 +40,108 @@ const Demo = styled('div')(({ theme }) => ({
 
 export default function InteractiveList() {
    const [server2, setServer2] = React.useState(false)
-   const [secondary, setSecondary] = React.useState(false)
-
+   const [embedVideos, setEmbedVideos] = React.useState<any>([])
+   const [loading, setLoading] = React.useState(false)
+   const [videosRefetch, setVideosRefetch] = React.useState(false)
+   React.useEffect(() => {
+      setEmbedVideos([])
+      const checkUser = useUser.getState().checkUser
+      setLoading(true)
+      checkUser().then(() => {
+         const _uploader = useUser.getState().uploader
+         console.log('uploaderis', _uploader)
+         if (server2) {
+            return getEmbedVideos2Query({ uploader: _uploader }).then((res) => {
+               setEmbedVideos(
+                  res.embedVideo2s
+                     ? res.embedVideo2s.length
+                        ? [...res.embedVideo2s]
+                        : []
+                     : []
+               )
+               setLoading(false)
+            })
+         }
+         getEmbedVideosQuery({ uploader: _uploader }).then((res) => {
+            setEmbedVideos(
+               res.embedVideos
+                  ? res.embedVideos.length
+                     ? [...res.embedVideos]
+                     : []
+                  : []
+            )
+            setLoading(false)
+         })
+      })
+   }, [videosRefetch, server2])
+   function handleDelete(
+      movieName: string,
+      uploadStatus: boolean,
+      id: string | number
+   ) {
+      const bnetKey = useUser.getState().accessToken
+      const bnetKey2 = useUser.getState().server2AccessToken
+      const _url = !server2
+         ? `https://storage.bunnycdn.com/apidevurn/${movieName}.mp4`
+         : `https://storage.bunnycdn.com/container2/${movieName}.mp4`
+      if (uploadStatus) {
+         return axios
+            .delete(_url, {
+               headers: {
+                  'Content-Type': 'application/octet-stream',
+                  AccessKey: server2 ? bnetKey2 : bnetKey,
+               },
+            })
+            .then((res) => {
+               if (res.status === 200) {
+                  if (!server2) {
+                     return deleteEmbed1Mutate({ id: id })
+                        .then((res) => {
+                           alert(res)
+                           setVideosRefetch((prev) => !prev)
+                        })
+                        .catch((e) => {
+                           alert(e.message)
+                           setVideosRefetch((prev) => !prev)
+                        })
+                  } else {
+                     return deleteEmbed2Mutate({ id: id })
+                        .then((res) => {
+                           alert(res)
+                           setVideosRefetch((prev) => !prev)
+                        })
+                        .catch((e) => {
+                           alert(e.message)
+                           setVideosRefetch((prev) => !prev)
+                        })
+                  }
+               }
+            })
+            .catch((e) => alert(e.message))
+      }
+      if (!server2) {
+         return deleteEmbed1Mutate({ id: id })
+            .then((res) => {
+               alert(res)
+               setVideosRefetch((prev) => !prev)
+            })
+            .catch((e) => {
+               alert(e.message)
+               setVideosRefetch((prev) => !prev)
+            })
+      } else {
+         return deleteEmbed2Mutate({ id: id })
+            .then((res) => {
+               alert(res)
+               setVideosRefetch((prev) => !prev)
+            })
+            .catch((e) => {
+               alert(e.message)
+               setVideosRefetch((prev) => !prev)
+            })
+      }
+   }
+   if (loading) return <div>Loading...</div>
    return (
       <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
          <FormGroup row>
@@ -44,15 +154,6 @@ export default function InteractiveList() {
                }
                label="server2"
             />
-            <FormControlLabel
-               control={
-                  <Checkbox
-                     checked={secondary}
-                     onChange={(event) => setSecondary(event.target.checked)}
-                  />
-               }
-               label="Enable secondary text"
-            />
          </FormGroup>
          <Grid item xs={12} md={6}>
             <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
@@ -60,23 +161,54 @@ export default function InteractiveList() {
             </Typography>
             <Demo>
                <List>
-                  <ListItem
-                     secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                           <DeleteIcon />
-                        </IconButton>
-                     }
-                  >
-                     <ListItemAvatar>
-                        <Avatar>
-                           <FolderIcon />
-                        </Avatar>
-                     </ListItemAvatar>
-                     <ListItemText
-                        primary="Single-line item"
-                        secondary={secondary ? 'Secondary text' : null}
-                     />
-                  </ListItem>
+                  {embedVideos && embedVideos.length ? (
+                     embedVideos.map((v: any) => (
+                        <ListItem
+                           key={v.id}
+                           secondaryAction={
+                              <IconButton
+                                 onClick={() =>
+                                    handleDelete(
+                                       server2 ? v.embedLink : v.eigaLink,
+                                       server2
+                                          ? v.upload_status
+                                          : v.uploadStatus,
+                                       v.id
+                                    )
+                                 }
+                                 edge="end"
+                                 aria-label="delete"
+                              >
+                                 <DeleteIcon />
+                              </IconButton>
+                           }
+                        >
+                           <ListItemAvatar>
+                              <Avatar>
+                                 <FolderIcon />
+                              </Avatar>
+                           </ListItemAvatar>
+                           <ListItemText
+                              primary={`${
+                                 server2 ? v.movie_name : v.movieName
+                              }- ${v.season ? `S-${v.season}` : ''}${
+                                 v.episode ? `E-${v.episode}` : ''
+                              }`}
+                              secondary={
+                                 server2
+                                    ? v.upload_status
+                                       ? 'upload completed'
+                                       : 'upload not completed'
+                                    : v.uploadStatus
+                                    ? 'upload completed'
+                                    : 'upload not completed'
+                              }
+                           />
+                        </ListItem>
+                     ))
+                  ) : (
+                     <h1>Empty</h1>
+                  )}
                </List>
             </Demo>
          </Grid>

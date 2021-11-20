@@ -8,7 +8,8 @@ const uploadEmbed = gql`
       $season: Int
       $episode: Int
       $eigaLink: String
-      $uploadStatus: Boolean
+      $upload_status: Boolean
+      $uploader: String
    ) {
       createEmbedVideo2(
          input: {
@@ -17,7 +18,8 @@ const uploadEmbed = gql`
                season: $season
                episode: $episode
                embedLink: $eigaLink
-               upload_status: $uploadStatus
+               upload_status: $upload_status
+               uploader: $uploader
             }
          }
       ) {
@@ -34,7 +36,7 @@ const updateEmbed = gql`
       $season: Int
       $episode: Int
       $embedLink: String
-      $uploadStatus: Boolean
+      $upload_status: Boolean
       $original_link: String
       $video_size: String
    ) {
@@ -46,7 +48,7 @@ const updateEmbed = gql`
                season: $season
                episode: $episode
                embedLink: $embedLink
-               upload_status: $uploadStatus
+               upload_status: $upload_status
                original_link: $original_link
                video_size: $video_size
             }
