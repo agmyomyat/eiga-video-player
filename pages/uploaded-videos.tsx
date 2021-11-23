@@ -112,7 +112,7 @@ export default function InteractiveList() {
       uploadStatus: boolean,
       id: string | number
    ) {
-      const bnetKey = useUser.getState().accessToken
+      const bnetKey = useUser.getState().server1AccessToken
       const bnetKey2 = useUser.getState().server2AccessToken
       const _url = !server2
          ? `https://storage.bunnycdn.com/apidevurn/${movieName}.mp4`
