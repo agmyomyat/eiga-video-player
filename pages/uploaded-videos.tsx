@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
-import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
@@ -25,6 +24,11 @@ import {
    deleteEmbed1Mutate,
    deleteEmbed2Mutate,
 } from '../src/api/graphql-req/deleteEmbed'
+import SearchBoxComponent from '../src/components/searchbox'
+import {
+   searchEmbedVideos2Query,
+   searchEmbedVideosQuery,
+} from '../src/api/graphql-req/searchMovies'
 
 function generate(element: React.ReactElement) {
    return [0, 1, 2].map((value) =>
@@ -43,6 +47,35 @@ export default function InteractiveList() {
    const [embedVideos, setEmbedVideos] = React.useState<any>([])
    const [loading, setLoading] = React.useState(false)
    const [videosRefetch, setVideosRefetch] = React.useState(false)
+   const [searchValue, setSearchValue] = React.useState('')
+   function onChangeSearch(e: React.ChangeEvent<HTMLInputElement>) {
+      setSearchValue(e.currentTarget.value)
+   }
+   React.useEffect(() => {
+      const _uploader = useUser.getState().uploader
+      if (!searchValue) return
+      const timeout = setTimeout(() => {
+         if (server2) {
+            return searchEmbedVideos2Query({
+               movie_name: searchValue,
+               uploader: _uploader,
+            }).then((res) => {
+               if (res.embedVideo2s && res.embedVideo2s)
+                  return setEmbedVideos([...res.embedVideo2s])
+               setEmbedVideos([])
+            })
+         }
+         return searchEmbedVideosQuery({
+            movieName: searchValue,
+            uploader: _uploader,
+         }).then((res) => {
+            if (res.embedVideos && res.embedVideos)
+               return setEmbedVideos([...res.embedVideos])
+            setEmbedVideos([])
+         })
+      }, 500)
+      return () => clearTimeout(timeout)
+   }, [searchValue])
    React.useEffect(() => {
       setEmbedVideos([])
       const checkUser = useUser.getState().checkUser
@@ -97,7 +130,7 @@ export default function InteractiveList() {
                   if (!server2) {
                      return deleteEmbed1Mutate({ id: id })
                         .then((res) => {
-                           alert(res)
+                           alert(`${movieName} deleted`)
                            setVideosRefetch((prev) => !prev)
                         })
                         .catch((e) => {
@@ -107,7 +140,7 @@ export default function InteractiveList() {
                   } else {
                      return deleteEmbed2Mutate({ id: id })
                         .then((res) => {
-                           alert(res)
+                           alert(`${movieName} deleted`)
                            setVideosRefetch((prev) => !prev)
                         })
                         .catch((e) => {
@@ -122,7 +155,7 @@ export default function InteractiveList() {
       if (!server2) {
          return deleteEmbed1Mutate({ id: id })
             .then((res) => {
-               alert(res)
+               alert(`${movieName} deleted`)
                setVideosRefetch((prev) => !prev)
             })
             .catch((e) => {
@@ -132,7 +165,7 @@ export default function InteractiveList() {
       } else {
          return deleteEmbed2Mutate({ id: id })
             .then((res) => {
-               alert(res)
+               alert(`${movieName} deleted`)
                setVideosRefetch((prev) => !prev)
             })
             .catch((e) => {
@@ -144,6 +177,7 @@ export default function InteractiveList() {
    if (loading) return <div>Loading...</div>
    return (
       <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+         <SearchBoxComponent value={searchValue} onChange={onChangeSearch} />
          <FormGroup row>
             <FormControlLabel
                control={

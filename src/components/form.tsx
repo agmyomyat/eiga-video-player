@@ -31,6 +31,7 @@ import {
    updateEmbedS2Mutation,
    uploadEmbedS2Mutation,
 } from '../api/graphql-req/embedS2mutate'
+import { useRouter } from 'next/router'
 
 type FormProp<T = () => void> = {
    handleChoose: T
@@ -60,6 +61,7 @@ export default function UploadForm({
    const [modalMessage, setModalMessage] = useState<string>('')
    const user = useUser.getState().uploader
    const logOut = useUser.getState().logOut
+   const router = useRouter()
    const handleServerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setIsServer2(event.target.checked)
    }
@@ -216,6 +218,12 @@ export default function UploadForm({
                            <Typography variant="h5">{user}</Typography>
                            <Button variant="outlined" onClick={() => logOut()}>
                               LogOut
+                           </Button>
+                           <Button
+                              variant="outlined"
+                              onClick={() => router.push('/uploaded-videos')}
+                           >
+                              uploaded Videos
                            </Button>
                         </Stack>
                         <Box
