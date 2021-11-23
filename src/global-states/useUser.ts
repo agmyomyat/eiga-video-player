@@ -5,21 +5,21 @@ import { setAccessToken } from "../share/token";
 type UserProp = {
    uploader: string
    verify: boolean
-   accessToken: string
+   server1AccessToken: string
    server2AccessToken: string
    setUserVerify: (prop: boolean) => void
    setUploader: (prop: string) => void
    checkUser: () => Promise<any>
    logOut: () => void
-   setAccessToken: (prop: string) => void
+   setServer1AccessToken: (prop: string) => void
    setServer2AccessToken: (prop: string) => void
 }
 export const useUser = create<UserProp>((set, get) => ({
-   accessToken: '',
+   server1AccessToken: '',
    server2AccessToken: '',
    uploader: '',
    verify: false,
-   setAccessToken: (prop: string) =>
+   setServer1AccessToken: (prop: string) =>
       set((state) => ({ ...state, accessToken: prop })),
    setServer2AccessToken: (prop: string) =>
       set((state) => ({ ...state, server2AccessToken: prop })),
@@ -40,7 +40,7 @@ export const useUser = create<UserProp>((set, get) => ({
             ...state,
             verify: res.verifyToken.verify,
             uploader: res.verifyToken.user,
-            accessToken: res.verifyToken.bnet,
+            server1AccessToken: res.verifyToken.bnet,
             server2AccessToken: res.verifyToken.bnet2,
          }))
          console.log('state in checkuser ', get().uploader)

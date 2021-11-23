@@ -45,7 +45,7 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
       fileName: string
       server2: boolean
    }) {
-      const accessToken = useUser.getState().accessToken
+      const accessToken = useUser.getState().server1AccessToken
       const server2AccessKey = useUser.getState().server2AccessToken
       if (cancelToken) {
          cancelToken.cancel()

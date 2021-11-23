@@ -20,21 +20,22 @@ export default function Login() {
 	});
 
 	const { replace } = useRouter();
-	const { setBnet,uploader, userVerify, checkUser, setUserVerify, setUser } = useUser(
-		React.useCallback(
-			(state) => ({
-				setUserVerify: state.setUserVerify,
-				userVerify: state.verify,
-				uploader: state.uploader,
-				setUser: state.setUploader,
-				checkUser: state.checkUser,
-				setBnet:state.setAccessToken
-			}),
+	const { setBnet, uploader, userVerify, checkUser, setUserVerify, setUser } =
+      useUser(
+         React.useCallback(
+            (state) => ({
+               setUserVerify: state.setUserVerify,
+               userVerify: state.verify,
+               uploader: state.uploader,
+               setUser: state.setUploader,
+               checkUser: state.checkUser,
+               setBnet: state.setServer1AccessToken,
+            }),
 
-			[]
-		),
-		shallow
-	);
+            []
+         ),
+         shallow
+      )
 	useEffect(() => {
 		if (uploader && userVerify) {
 			replace("/");
