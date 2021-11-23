@@ -1,6 +1,6 @@
 import axios, { CancelTokenSource } from 'axios'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import uploadVideo from '../http'
+import { uploadVideo, uploadVideoS2 } from '../http'
 import LinearWithValueLabel from '../components/progressBar'
 import { UploadModal } from './uploadModal'
 import { styled } from '@mui/material'
@@ -38,8 +38,15 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
    function onUploadProgress(event: ProgressEvent) {
       setProgress(Math.round((99 * event.loaded) / event.total))
    }
-   async function _handleUpload({ fileName }: { fileName: string }) {
+   async function _handleUpload({
+      fileName,
+      server2,
+   }: {
+      fileName: string
+      server2: boolean
+   }) {
       const accessToken = useUser.getState().accessToken
+      const server2AccessKey = useUser.getState().server2AccessToken
       if (cancelToken) {
          cancelToken.cancel()
       }
@@ -50,12 +57,21 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
       } else {
          throw Error('inputRef value not found(its not supposed to be empty)')
       }
-      return uploadVideo(
+      if (!server2) {
+         return uploadVideo(
+            video,
+            onUploadProgress,
+            fileName,
+            cancelToken,
+            accessToken
+         )
+      }
+      return uploadVideoS2(
          video,
          onUploadProgress,
          fileName,
          cancelToken,
-         accessToken
+         server2AccessKey
       )
    }
 
