@@ -11,11 +11,15 @@ export default function Player({
    textTrack,
    videoId,
    fileSize,
+   mmTextTrack,
+   server_url,
 }: {
    fileSize: string
    uuid: string
    textTrack: string
+   mmTextTrack: string
    videoId: string
+   server_url: string
 }) {
    const playerRef = React.useRef<VideoJsPlayer | null>(null)
    const [open, setOpen] = React.useState(false)
@@ -66,7 +70,7 @@ export default function Player({
                'download',
             ],
             fullscreen: { iosNative: true },
-            captions: { active: true },
+            captions: { active: false },
          })
          // player.on('pause', (e: any) => {
          //    console.log(' player pause', e)
@@ -89,7 +93,7 @@ export default function Player({
             title: 'Example title',
             sources: [
                {
-                  src: `https://fcdn.rosestream.watch/${uuid}.mp4`,
+                  src: `${server_url}/${uuid}.mp4`,
                   type: 'video/mp4',
                   size: 1080,
                },
@@ -97,9 +101,15 @@ export default function Player({
             tracks: [
                {
                   kind: 'captions',
+                  label: 'Burmese',
+                  srclang: 'en',
+                  src: `${process.env.EMBED_URL}/vtt/${mmTextTrack}.vtt`,
+               },
+               {
+                  kind: 'captions',
                   label: 'English',
                   srclang: 'en',
-                  src: `https://fcdn.rosestream.watch/vtt/${textTrack}.vtt`,
+                  src: `${process.env.EMBED_URL}/vtt/${textTrack}.vtt`,
                },
             ],
          }
