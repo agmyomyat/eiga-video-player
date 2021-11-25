@@ -15,7 +15,8 @@ export async function uploadVideo<
    let config = {
       headers: {
          'Content-Type': 'application/octet-stream',
-         AccessKey: accessKey,
+         // prettier-ignore
+         'AccessKey': accessKey,
       },
       onUploadProgress,
       cancelToken: CancelRequest.token,
@@ -50,7 +51,8 @@ export async function uploadVideoS2<
    let config = {
       headers: {
          'Content-Type': 'application/octet-stream',
-         AccessKey: accessKey,
+         // prettier-ignore
+         'AccessKey': accessKey,
       },
       onUploadProgress,
       cancelToken: CancelRequest.token,
