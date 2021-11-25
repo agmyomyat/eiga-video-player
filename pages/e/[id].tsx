@@ -46,6 +46,8 @@ export default function Embed(props: any) {
             videoId={router.query.id as string}
             textTrack={props.videoData?.embedVideos[0]?.eng_sub}
             uuid={router.query.id as string}
+            mmTextTrack={props.videoData?.embedVideos[0]?.mm_sub}
+            server_url={process.env.EMBED_URL as string}
          />
          {/* <Button onClick={download}>download</Button>
       <Button onClick={cancelDownload}>Cancel</Button> */}
@@ -64,7 +66,10 @@ export async function getStaticProps({ params }: any) {
 
    // Pass post data to the page via props
    const res = await embedSubQuery({ eigaLink: params.id })
-   return { props: { params, videoData: res } }
+   return {
+      props: { params, videoData: res },
+      revalidate: 10, // In seconds
+   }
 }
 function FacebookCircularProgress(props: CircularProgressProps) {
    return (

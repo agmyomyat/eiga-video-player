@@ -13,6 +13,7 @@ export default function Embed(props: any) {
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
    useEffect(() => {
+      console.log(process.env.ENG_EMBED_URL)
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
       if (router.isReady && !router.query.token) {
@@ -46,6 +47,8 @@ export default function Embed(props: any) {
             videoId={router.query.id as string}
             textTrack={props.videoData?.embedVideos[0]?.eng_sub}
             uuid={router.query.id as string}
+            mmTextTrack={props.videoData?.embedVideos[0]?.mm_sub}
+            server_url={process.env.ENG_EMBED_URL as string}
          />
          {/* <Button onClick={download}>download</Button>
       <Button onClick={cancelDownload}>Cancel</Button> */}
@@ -64,7 +67,10 @@ export async function getStaticProps({ params }: any) {
 
    // Pass post data to the page via props
    const res = await embedSubQuery({ eigaLink: params.id })
-   return { props: { params, videoData: res } }
+   return {
+      props: { params, videoData: res },
+      revalidate: 10, // In seconds
+   }
 }
 function FacebookCircularProgress(props: CircularProgressProps) {
    return (
