@@ -102,7 +102,7 @@ export default function Player({
                {
                   kind: 'captions',
                   label: 'Burmese',
-                  srclang: 'en',
+                  srclang: 'mm',
                   src: `${process.env.EMBED_URL}/vtt/${mmTextTrack}.vtt`,
                },
                {
