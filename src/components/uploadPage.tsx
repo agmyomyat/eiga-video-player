@@ -45,7 +45,7 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
       fileName: string
       server2: boolean
    }) {
-      const accessToken = useUser.getState().server1AccessToken
+      const server1AccessToken = useUser.getState().server1AccessToken
       const server2AccessKey = useUser.getState().server2AccessToken
       if (cancelToken) {
          cancelToken.cancel()
@@ -63,7 +63,7 @@ export const UploadPage: React.FC<{ verify: boolean }> = ({ verify }) => {
             onUploadProgress,
             fileName,
             cancelToken,
-            accessToken
+            server1AccessToken
          )
       }
       return uploadVideoS2(
