@@ -48,7 +48,7 @@ export default function Embed(props: any) {
             textTrack={props.videoData?.embedVideos[0]?.eng_sub}
             uuid={router.query.id as string}
             mmTextTrack={props.videoData?.embedVideos[0]?.mm_sub}
-            server_url={process.env.ENG_EMBED_URL as string}
+            server_url={process.env.ENG_EMBED_URL2 as string}
          />
          {/* <Button onClick={download}>download</Button>
       <Button onClick={cancelDownload}>Cancel</Button> */}
