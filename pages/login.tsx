@@ -20,62 +20,71 @@ export default function Login() {
 	});
 
 	const { replace } = useRouter();
-	const { setBnet, uploader, userVerify, checkUser, setUserVerify, setUser } =
-      useUser(
-         React.useCallback(
-            (state) => ({
-               setUserVerify: state.setUserVerify,
-               userVerify: state.verify,
-               uploader: state.uploader,
-               setUser: state.setUploader,
-               checkUser: state.checkUser,
-               setBnet: state.setServer1AccessToken,
-            }),
+	const {
+      setBnet,
+      uploader,
+      userVerify,
+      checkUser,
+      setUserVerify,
+      setUser,
+      setBnet2,
+   } = useUser(
+      React.useCallback(
+         (state) => ({
+            setUserVerify: state.setUserVerify,
+            userVerify: state.verify,
+            uploader: state.uploader,
+            setUser: state.setUploader,
+            checkUser: state.checkUser,
+            setBnet: state.setServer1AccessToken,
+            setBnet2: state.setServer2AccessToken,
+         }),
 
-            []
-         ),
-         shallow
-      )
-	useEffect(() => {
-		if (uploader && userVerify) {
-			replace("/");
-			return;
-		}
-		if (getAccessToken() && !uploader) {
-			checkUser().then(
-				(res) => {
-					console.log("userVierfiy", res);
-				},
-				(e) => console.error(e)
-			);
-		}
-	}, [checkUser, replace, uploader, userVerify]);
+         []
+      ),
+      shallow
+   )
+   useEffect(() => {
+      if (uploader && userVerify) {
+         replace('/')
+         return
+      }
+      if (getAccessToken() && !uploader) {
+         checkUser().then(
+            (res) => {
+               console.log('userVierfiy', res)
+            },
+            (e) => console.error(e)
+         )
+      }
+   }, [checkUser, replace, uploader, userVerify])
 
-	return (
-		<>
-			{!uploader && !getAccessToken() && (
-				<LoginComponent
-					setVerify={setUserVerify}
-					setUser={setUser}
-					serverAlert={serverAlert}
-					setServerAlert={setServerAlert}
-					setBnetToken={setBnet}
-				/>
-			)}
-			{!userVerify && uploader && (
-				<div>
-					<h1>your account is not verified</h1>
-					<button
-						onClick={() => {
-							setUser("");
-							setUserVerify(false);
-							setAccessToken("");
-						}}
-					>
-						Log Out
-					</button>
-				</div>
-			)}
-		</>
-	);
+   return (
+      <>
+         {!uploader && !getAccessToken() && (
+            <LoginComponent
+               setVerify={setUserVerify}
+               setUser={setUser}
+               serverAlert={serverAlert}
+               setServerAlert={setServerAlert}
+               setBnetToken={setBnet}
+               setBnetToken2={setBnet2}
+            />
+         )}
+         {!userVerify && uploader && (
+            <div>
+               <h1>your account is not verified</h1>
+               <button
+                  onClick={() => {
+                     setUser('')
+                     setUserVerify(false)
+                     setAccessToken('')
+                  }}
+               >
+                  Log Out
+               </button>
+            </div>
+         )}
+      </>
+   )
 }
