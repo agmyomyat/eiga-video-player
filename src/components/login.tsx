@@ -54,149 +54,156 @@ const Schema = Yup.object().shape({
 	password: Yup.string().required("This field is required"),
 });
 type LoginProps = {
-	setServerAlert: React.Dispatch<React.SetStateAction<ServerAlert>>;
-	serverAlert: ServerAlert;
-	setVerify: (prop: boolean) => void;
-	setUser: (prop: string) => void;
-	setBnetToken:(prop:string)=>void
-};
+   setServerAlert: React.Dispatch<React.SetStateAction<ServerAlert>>
+   serverAlert: ServerAlert
+   setVerify: (prop: boolean) => void
+   setUser: (prop: string) => void
+   setBnetToken: (prop: string) => void
+   setBnetToken2: (prop: string) => void
+}
 type ServerAlert = {
-	success: boolean;
-	fail: boolean;
-	message: string;
-};
+   success: boolean
+   fail: boolean
+   message: string
+}
 export default function LoginComponent({
-	setServerAlert,
-	serverAlert,
-	setVerify,
-	setUser,
-	setBnetToken,
+   setServerAlert,
+   serverAlert,
+   setVerify,
+   setUser,
+   setBnetToken,
+   setBnetToken2,
 }: LoginProps) {
-	const { push } = useRouter();
-	return (
-		<Formik
-			initialValues={{
-				userName: "",
-				password: "",
-			}}
-			validationSchema={Schema}
-			onSubmit={async (values, { setSubmitting, resetForm }) => {
-				setSubmitting(true);
-				const _serverResult = await loginEmbedMutation({
-					userName: values.userName,
-					password: values.password,
-				});
-				console.log(_serverResult);
-				const res = _serverResult.loginEmbedUploader;
-				if (res.statusCode === 200) {
-					console.log("token",res.jwt)
-					setAccessToken(res.jwt);
-					setBnetToken(res.bnet)
-					resetForm({});
-					setSubmitting(false);
-					setServerAlert({
-						...serverAlert,
-						success: true,
-						fail: false,
-						message: _serverResult.loginEmbedUploader.status,
-					});
-					setUser(res.userName);
-					return setVerify(res.verify);
-				}
-				setSubmitting(false);
-				return setServerAlert({
-					...serverAlert,
-					success: false,
-					fail: true,
-					message: "Wrong username or password",
-				});
-			}}
-		>
-			{({ values, errors, handleChange, submitForm, isSubmitting }) => {
-				return (
-					<Container component="main" maxWidth="xs">
-						<Box
-							sx={{
-								marginTop: 8,
-								display: "flex",
-								flexDirection: "column",
-								alignItems: "center",
-							}}
-						>
-							<Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-								<LockOutlinedIcon />
-							</Avatar>
-							<Typography component="h1" variant="h5">
-								Sign In
-							</Typography>
-							<ServerMessage
-								success={serverAlert.success}
-								fail={serverAlert.fail}
-								message={serverAlert.message}
-							/>
-							<Form>
-								<Box sx={{ mt: 1 }}>
-									<TextField
-										value={values.userName}
-										onChange={(e) => {
-											handleChange(e);
-											setServerAlert({
-												fail: false,
-												success: false,
-												message: "",
-											});
-										}}
-										margin="normal"
-										required
-										fullWidth
-										id="userName"
-										label="User Name"
-										name="userName"
-										autoFocus
-										error={!!errors.userName}
-										helperText={errors.userName}
-									/>
-									<TextField
-										value={values.password}
-										onChange={handleChange}
-										margin="normal"
-										required
-										fullWidth
-										name="password"
-										label="Password"
-										type="password"
-										id="password"
-										error={!!errors.password}
-										helperText={errors.password}
-									/>
-									<LoadingButton
-										loading={isSubmitting}
-										onClick={submitForm}
-										fullWidth
-										variant="contained"
-										sx={{ mt: 3, mb: 2 }}
-									>
-										Sign In
-									</LoadingButton>
-									<Grid container>
-										<Grid item xs>
-											<Link href="#" variant="body2">
-												Forgot password?
-											</Link>
-										</Grid>
-										<Grid item>
-											<Link href="#" onClick={() => push("/register")} variant="body2">
-												{"Not have an account? Sign Up"}
-											</Link>
-										</Grid>
-									</Grid>
-								</Box>
-							</Form>
-						</Box>
-						<Copyright sx={{ mt: 8, mb: 4 }} />
-					</Container>
-				);
-			}}
-		</Formik>
-	);
+   const { push } = useRouter()
+   return (
+      <Formik
+         initialValues={{
+            userName: '',
+            password: '',
+         }}
+         validationSchema={Schema}
+         onSubmit={async (values, { setSubmitting, resetForm }) => {
+            setSubmitting(true)
+            const _serverResult = await loginEmbedMutation({
+               userName: values.userName,
+               password: values.password,
+            })
+            console.log(_serverResult)
+            const res = _serverResult.loginEmbedUploader
+            if (res.statusCode === 200) {
+               console.log('token', res.jwt)
+               setAccessToken(res.jwt)
+               setBnetToken(res.bnet)
+               setBnetToken2(res.bnet2)
+               resetForm({})
+               setSubmitting(false)
+               setServerAlert({
+                  ...serverAlert,
+                  success: true,
+                  fail: false,
+                  message: _serverResult.loginEmbedUploader.status,
+               })
+               setUser(res.userName)
+               return setVerify(res.verify)
+            }
+            setSubmitting(false)
+            return setServerAlert({
+               ...serverAlert,
+               success: false,
+               fail: true,
+               message: 'Wrong username or password',
+            })
+         }}
+      >
+         {({ values, errors, handleChange, submitForm, isSubmitting }) => {
+            return (
+               <Container component="main" maxWidth="xs">
+                  <Box
+                     sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                     }}
+                  >
+                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                     </Avatar>
+                     <Typography component="h1" variant="h5">
+                        Sign In
+                     </Typography>
+                     <ServerMessage
+                        success={serverAlert.success}
+                        fail={serverAlert.fail}
+                        message={serverAlert.message}
+                     />
+                     <Form>
+                        <Box sx={{ mt: 1 }}>
+                           <TextField
+                              value={values.userName}
+                              onChange={(e) => {
+                                 handleChange(e)
+                                 setServerAlert({
+                                    fail: false,
+                                    success: false,
+                                    message: '',
+                                 })
+                              }}
+                              margin="normal"
+                              required
+                              fullWidth
+                              id="userName"
+                              label="User Name"
+                              name="userName"
+                              autoFocus
+                              error={!!errors.userName}
+                              helperText={errors.userName}
+                           />
+                           <TextField
+                              value={values.password}
+                              onChange={handleChange}
+                              margin="normal"
+                              required
+                              fullWidth
+                              name="password"
+                              label="Password"
+                              type="password"
+                              id="password"
+                              error={!!errors.password}
+                              helperText={errors.password}
+                           />
+                           <LoadingButton
+                              loading={isSubmitting}
+                              onClick={submitForm}
+                              fullWidth
+                              variant="contained"
+                              sx={{ mt: 3, mb: 2 }}
+                           >
+                              Sign In
+                           </LoadingButton>
+                           <Grid container>
+                              <Grid item xs>
+                                 <Link href="#" variant="body2">
+                                    Forgot password?
+                                 </Link>
+                              </Grid>
+                              <Grid item>
+                                 <Link
+                                    href="#"
+                                    onClick={() => push('/register')}
+                                    variant="body2"
+                                 >
+                                    {'Not have an account? Sign Up'}
+                                 </Link>
+                              </Grid>
+                           </Grid>
+                        </Box>
+                     </Form>
+                  </Box>
+                  <Copyright sx={{ mt: 8, mb: 4 }} />
+               </Container>
+            )
+         }}
+      </Formik>
+   )
 }

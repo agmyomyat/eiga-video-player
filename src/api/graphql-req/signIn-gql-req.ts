@@ -1,17 +1,18 @@
 import { gql } from "graphql-request";
 import { client } from "./initializeGql";
 const loginEmbed = gql`
-	mutation LoginEmbed($userName: String!, $password: String!) {
-		loginEmbedUploader(input: { userName: $userName, password: $password }) {
-			statusCode
-			status
-			userName
-			jwt
-			verify
-			bnet
-		}
-	}
-`;
+   mutation LoginEmbed($userName: String!, $password: String!) {
+      loginEmbedUploader(input: { userName: $userName, password: $password }) {
+         statusCode
+         status
+         userName
+         jwt
+         verify
+         bnet
+         bnet2
+      }
+   }
+`
 
 type LoginProp = {
 	userName: String;
