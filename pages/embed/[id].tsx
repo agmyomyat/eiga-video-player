@@ -7,13 +7,13 @@ import {
 import { NextRouter, useRouter } from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 import { checkPremiumQuery } from '../../src/api/graphql-req/checkPremium'
-import { embedSubQuery } from '../../src/api/graphql-req/embedSub'
+import { embedSubQuery2 } from '../../src/api/graphql-req/embedSub2'
 import Player from '../../src/components/player'
 export default function Embed(props: any) {
+   console.log('props is ', props)
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
    useEffect(() => {
-      console.log(process.env.ENG_EMBED_URL)
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
       if (router.isReady && !router.query.token) {
@@ -43,12 +43,9 @@ export default function Embed(props: any) {
    return (
       <div>
          <Player
-            fileSize={props.videoData?.embedVideos[0]?.fileSize}
-            videoId={router.query.id as string}
-            textTrack={props.videoData?.embedVideos[0]?.eng_sub}
+            config={props.plyrConfig}
+            fileSize={props.videoData?.embedVideo2s[0]?.video_size}
             uuid={router.query.id as string}
-            mmTextTrack={props.videoData?.embedVideos[0]?.mm_sub}
-            server_url={process.env.ENG_EMBED_URL as string}
          />
          {/* <Button onClick={download}>download</Button>
       <Button onClick={cancelDownload}>Cancel</Button> */}
@@ -66,9 +63,36 @@ export async function getStaticProps({ params }: any) {
    // If the route is like /posts/1, then params.id is 1
 
    // Pass post data to the page via props
-   const res = await embedSubQuery({ eigaLink: params.id })
+   const res = await embedSubQuery2({ embedLink: params.id })
+   const plyrConfig = {
+      type: 'video',
+      title: 'Example title',
+      sources: [
+         {
+            src: `${process.env.ENG_EMBED_URL as string}/${
+               params.id as string
+            }.mp4`,
+            type: 'video/mp4',
+            size: 1080,
+         },
+      ],
+      tracks: [
+         {
+            kind: 'captions',
+            label: 'Burmese',
+            srclang: 'mm',
+            src: `${process.env.EMBED_URL}/mm_vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+         },
+         {
+            kind: 'captions',
+            label: 'English',
+            srclang: 'en',
+            src: `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+         },
+      ],
+   }
    return {
-      props: { params, videoData: res },
+      props: { params, videoData: res, plyrConfig: plyrConfig },
       revalidate: 10, // In seconds
    }
 }

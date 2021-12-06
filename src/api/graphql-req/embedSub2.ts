@@ -1,17 +1,17 @@
 import { gql } from 'graphql-request'
 import { client } from './initializeGql'
 const embedSub = gql`
-   query EmbedVideos($eigaLink: String!) {
-      embedVideos(where: { eigaLink: $eigaLink }) {
+   query EmbedVideo2s($embedLink: String!) {
+      embedVideo2s(where: { embedLink: $embedLink }) {
          eng_sub
-         fileSize
+         video_size
          mm_sub
       }
    }
 `
 type Prop = {
-   eigaLink: string
+   embedLink: string
 }
-export async function embedSubQuery({ ...prop }: Prop) {
+export async function embedSubQuery2({ ...prop }: Prop) {
    return client.request(embedSub, prop)
 }
