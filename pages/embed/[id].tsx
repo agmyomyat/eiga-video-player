@@ -81,7 +81,7 @@ export async function getStaticProps({ params }: any) {
             kind: 'captions',
             label: 'Burmese',
             srclang: 'mm',
-            src: `${process.env.EMBED_URL}/mm_vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+            src: `${process.env.EMBED_URL}/mm_vtt/${res?.embedVideo2s[0]?.mm_sub}.vtt`,
          },
          {
             kind: 'captions',
