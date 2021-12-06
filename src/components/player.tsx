@@ -8,18 +8,12 @@ let cancelAxioToken: CancelTokenSource
 
 export default function Player({
    uuid,
-   textTrack,
-   videoId,
    fileSize,
-   mmTextTrack,
-   server_url,
+   config,
 }: {
    fileSize: string
    uuid: string
-   textTrack: string
-   mmTextTrack: string
-   videoId: string
-   server_url: string
+   config: {}
 }) {
    const playerRef = React.useRef<VideoJsPlayer | null>(null)
    const [open, setOpen] = React.useState(false)
@@ -88,31 +82,32 @@ export default function Player({
          player.on('error', (e: any) => {
             console.log('player occuring error', e)
          })
-         player.source = {
-            type: 'video',
-            title: 'Example title',
-            sources: [
-               {
-                  src: `${server_url}/${uuid}.mp4`,
-                  type: 'video/mp4',
-                  size: 1080,
-               },
-            ],
-            tracks: [
-               {
-                  kind: 'captions',
-                  label: 'Burmese',
-                  srclang: 'mm',
-                  src: `${process.env.EMBED_URL}/vtt/${mmTextTrack}.vtt`,
-               },
-               {
-                  kind: 'captions',
-                  label: 'English',
-                  srclang: 'en',
-                  src: `${process.env.EMBED_URL}/vtt/${textTrack}.vtt`,
-               },
-            ],
-         }
+         player.source = config
+         // player.source = {
+         //    type: 'video',
+         //    title: 'Example title',
+         //    sources: [
+         //       {
+         //          src: `${server_url}/${uuid}.mp4`,
+         //          type: 'video/mp4',
+         //          size: 1080,
+         //       },
+         //    ],
+         //    tracks: [
+         //       {
+         //          kind: 'captions',
+         //          label: 'Burmese',
+         //          srclang: 'mm',
+         //          src: `${process.env.EMBED_URL}/mm_vtt/${mmTextTrack}.vtt`,
+         //       },
+         //       {
+         //          kind: 'captions',
+         //          label: 'English',
+         //          srclang: 'en',
+         //          src: `${process.env.EMBED_URL}/vtt/${textTrack}.vtt`,
+         //       },
+         //    ],
+         // }
       }, [])
 
       return (
@@ -145,7 +140,7 @@ export default function Player({
       })
          .then((response) => {
             setDownloading(false)
-            fileDownload(response.data, `${videoId}.mp4`)
+            fileDownload(response.data, `${uuid}.mp4`)
             setModalMessage('download completed')
          })
          .catch((e) => {

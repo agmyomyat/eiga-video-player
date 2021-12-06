@@ -12,6 +12,19 @@ import Player from '../../src/components/player'
 export default function Embed(props: any) {
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
+   const plyrConfig = {
+      type: 'video',
+      title: 'Example title',
+      sources: [
+         {
+            src: `${process.env.EMBED_URL as string}/${
+               router.query.id as string
+            }.mp4`,
+            type: 'video/mp4',
+            size: 1080,
+         },
+      ],
+   }
    useEffect(() => {
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
@@ -42,12 +55,9 @@ export default function Embed(props: any) {
    return (
       <div>
          <Player
+            config={plyrConfig}
             fileSize={props.videoData?.embedVideos[0]?.fileSize}
-            videoId={router.query.id as string}
-            textTrack={props.videoData?.embedVideos[0]?.eng_sub}
             uuid={router.query.id as string}
-            mmTextTrack={props.videoData?.embedVideos[0]?.mm_sub}
-            server_url={process.env.EMBED_URL as string}
          />
          {/* <Button onClick={download}>download</Button>
       <Button onClick={cancelDownload}>Cancel</Button> */}
