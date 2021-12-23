@@ -1,7 +1,7 @@
 export function getAccessToken() {
    if (typeof window !== 'undefined') {
       try {
-         localStorage.getItem('eg258') || ''
+         return localStorage.getItem('eg258') || ''
       } catch (e: any) {
          console.log(e.message)
       }
@@ -11,7 +11,7 @@ export function getAccessToken() {
 export function setAccessToken(token: string) {
    if (typeof window !== 'undefined') {
       try {
-         localStorage.setItem('eg258', token)
+         return localStorage.setItem('eg258', token)
       } catch (e: any) {
          console.log(e.message)
       }
