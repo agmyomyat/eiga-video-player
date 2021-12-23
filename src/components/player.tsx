@@ -65,7 +65,7 @@ export default function Player({
             ],
             fullscreen: { iosNative: true },
             captions: { active: false },
-            storage: { enabled: false, key: 'plyr' },
+            storage: { enabled: false, key: 'plyrPlayer' },
          })
          // player.on('pause', (e: any) => {
          //    console.log(' player pause', e)
