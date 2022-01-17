@@ -64,7 +64,7 @@ export default function Player({
                'download',
             ],
             fullscreen: { iosNative: true },
-            captions: { active: false },
+            captions: { active: true },
             storage: { enabled: false, key: 'plyrPlayer' },
          })
          // player.on('pause', (e: any) => {
