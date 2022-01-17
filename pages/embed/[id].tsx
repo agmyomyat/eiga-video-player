@@ -79,12 +79,6 @@ export async function getStaticProps({ params }: any) {
       tracks: [
          {
             kind: 'captions',
-            label: 'Burmese',
-            srclang: 'mm',
-            src: `${process.env.EMBED_URL}/mm_vtt/${res?.embedVideo2s[0]?.mm_sub}.vtt`,
-         },
-         {
-            kind: 'captions',
             label: 'English',
             srclang: 'en',
             src: `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
