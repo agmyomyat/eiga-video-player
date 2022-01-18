@@ -29,19 +29,15 @@ export default function Login() {
       setUser,
       setBnet2,
    } = useUser(
-      React.useCallback(
-         (state) => ({
-            setUserVerify: state.setUserVerify,
-            userVerify: state.verify,
-            uploader: state.uploader,
-            setUser: state.setUploader,
-            checkUser: state.checkUser,
-            setBnet: state.setServer1AccessToken,
-            setBnet2: state.setServer2AccessToken,
-         }),
-
-         []
-      ),
+      (state) => ({
+         setUserVerify: state.setUserVerify,
+         userVerify: state.verify,
+         uploader: state.uploader,
+         setUser: state.setUploader,
+         checkUser: state.checkUser,
+         setBnet: state.setServer1AccessToken,
+         setBnet2: state.setServer2AccessToken,
+      }),
       shallow
    )
    useEffect(() => {
