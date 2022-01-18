@@ -1,5 +1,6 @@
 import { gql } from "graphql-request";
-import { client } from "./initializeGql";
+import { getAccessToken } from '../../share/token'
+import { client } from './initializeGql'
 const verifyToken = gql`
    mutation VerifyToken {
       verifyToken {
@@ -12,6 +13,9 @@ const verifyToken = gql`
       }
    }
 `
+const reqHeader = {
+   auth: getAccessToken(),
+}
 export async function verifyTokenMutation() {
-	return client.request(verifyToken);
+   return client.request(verifyToken, {}, reqHeader)
 }
