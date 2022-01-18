@@ -13,9 +13,9 @@ const verifyToken = gql`
       }
    }
 `
-const reqHeader = {
-   auth: getAccessToken(),
-}
 export async function verifyTokenMutation() {
+   const reqHeader = {
+      auth: getAccessToken(),
+   }
    return client.request(verifyToken, {}, reqHeader)
 }
