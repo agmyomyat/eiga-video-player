@@ -11,55 +11,58 @@ import React from "react";
 import { loginEmbedMutation } from "../api/graphql-req/signIn-gql-req";
 import { setAccessToken } from "../share/token";
 import { useRouter } from "next/router";
+import shallow from 'zustand/shallow'
+import { useUser } from '../global-states/useUser'
 function ServerMessage({
-	success,
-	fail,
-	message,
+   success,
+   fail,
+   message,
 }: {
-	success: boolean;
-	fail: boolean;
-	message: string;
+   success: boolean
+   fail: boolean
+   message: string
 }) {
-	return (
-		<>
-			{success && (
-				<Stack sx={{ width: "100%" }} spacing={2}>
-					<Alert severity="success">{message}</Alert>
-				</Stack>
-			)}
-			{fail && (
-				<Stack sx={{ width: "100%" }} spacing={2}>
-					<Alert severity="error">{message}</Alert>
-				</Stack>
-			)}
-		</>
-	);
+   return (
+      <>
+         {success && (
+            <Stack sx={{ width: '100%' }} spacing={2}>
+               <Alert severity="success">{message}</Alert>
+            </Stack>
+         )}
+         {fail && (
+            <Stack sx={{ width: '100%' }} spacing={2}>
+               <Alert severity="error">{message}</Alert>
+            </Stack>
+         )}
+      </>
+   )
 }
 
 function Copyright(props: any) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{"Copyright © "}
-			<Link color="inherit" href="/">
-				Eiga Cloud
-			</Link>{" "}
-			{new Date().getFullYear()}
-			{"."}
-		</Typography>
-	);
+   return (
+      <Typography
+         variant="body2"
+         color="text.secondary"
+         align="center"
+         {...props}
+      >
+         {'Copyright © '}
+         <Link color="inherit" href="/">
+            Eiga Cloud
+         </Link>{' '}
+         {new Date().getFullYear()}
+         {'.'}
+      </Typography>
+   )
 }
 const Schema = Yup.object().shape({
-	userName: Yup.string().required("This field cannot be emptied"),
+   userName: Yup.string().required('This field cannot be emptied'),
 
-	password: Yup.string().required("This field is required"),
-});
+   password: Yup.string().required('This field is required'),
+})
 type LoginProps = {
    setServerAlert: React.Dispatch<React.SetStateAction<ServerAlert>>
    serverAlert: ServerAlert
-   setVerify: (prop: boolean) => void
-   setUser: (prop: string) => void
-   setBnetToken: (prop: string) => void
-   setBnetToken2: (prop: string) => void
 }
 type ServerAlert = {
    success: boolean
@@ -67,13 +70,19 @@ type ServerAlert = {
    message: string
 }
 export default function LoginComponent({
-   setServerAlert,
    serverAlert,
-   setVerify,
-   setUser,
-   setBnetToken,
-   setBnetToken2,
+   setServerAlert,
 }: LoginProps) {
+   const { setBnet, setUser, setBnet2, userVerify, setUserVerify } = useUser(
+      (state) => ({
+         setUserVerify: state.setUserVerify,
+         userVerify: state.verify,
+         setUser: state.setUploader,
+         setBnet: state.setServer1AccessToken,
+         setBnet2: state.setServer2AccessToken,
+      }),
+      shallow
+   )
    const { push } = useRouter()
    return (
       <Formik
@@ -93,8 +102,8 @@ export default function LoginComponent({
             if (res.statusCode === 200) {
                console.log('token', res.jwt)
                setAccessToken(res.jwt)
-               setBnetToken(res.bnet)
-               setBnetToken2(res.bnet2)
+               setBnet(res.bnet)
+               setBnet2(res.bnet2)
                resetForm({})
                setSubmitting(false)
                setServerAlert({
@@ -104,7 +113,7 @@ export default function LoginComponent({
                   message: _serverResult.loginEmbedUploader.status,
                })
                setUser(res.userName)
-               return setVerify(res.verify)
+               return setUserVerify(res.verify)
             }
             setSubmitting(false)
             return setServerAlert({

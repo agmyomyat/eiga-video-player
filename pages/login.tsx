@@ -59,12 +59,8 @@ export default function Login() {
       <>
          {!uploader && !getAccessToken() && (
             <LoginComponent
-               setVerify={setUserVerify}
-               setUser={setUser}
                serverAlert={serverAlert}
                setServerAlert={setServerAlert}
-               setBnetToken={setBnet}
-               setBnetToken2={setBnet2}
             />
          )}
          {!userVerify && uploader && (
