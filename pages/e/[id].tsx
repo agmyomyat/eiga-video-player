@@ -31,8 +31,9 @@ export default function Embed(props: any) {
       if (router.isReady && !router.query.token) {
          console.log('props', props)
          console.log('it fucking')
-         // router.replace('/404')
-         setLoading(false)
+         router.replace('/404')
+         return
+         // setLoading(false)
       }
       checkPremiumQuery(router.query.token as string)
          .then((res) => {
@@ -40,8 +41,8 @@ export default function Embed(props: any) {
             if (res.getUserData.premium) {
                return setLoading(false)
             } else {
-               setLoading(false)
-               // router.replace('/404')
+               // setLoading(false)
+               router.replace('/404')
                return
             }
          })
