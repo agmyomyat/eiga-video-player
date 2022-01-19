@@ -61,7 +61,6 @@ export default function Player({
                'settings', // Settings menu
                'airplay', // Airplay (currently Safari only)
                'fullscreen', // Toggle fullscreen
-               'download',
             ],
             fullscreen: { iosNative: true },
             captions: { active: true },
