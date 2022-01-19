@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { useRouter, NextRouter } from 'next/router'
-import { Box, Typography, LinearProgressWithLabel, Button } from '@mui/material'
+import { Box, Typography, LinearProgress, Button } from '@mui/material'
 
 let cancelAxioToken: CancelTokenSource
 
@@ -49,7 +49,7 @@ export default function Download() {
          <Typography variant="h1">{query.id}</Typography>
          <Typography variant="h3">{modalMessage}</Typography>
          <Typography variant="h2">Name:{query.name}</Typography>
-         <LinearProgressWithLabel value={progress} />
+         <LinearProgress value={progress} />
          <Button onClick={download}>Download</Button>
          <Button onClick={cancelDownload}>Download</Button>
          <Button></Button>
