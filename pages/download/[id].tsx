@@ -2,7 +2,10 @@ import { useState } from 'react'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { useRouter, NextRouter } from 'next/router'
-import { Box, Typography, LinearProgress, Button } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
+import LinearProgress, {
+   LinearProgressProps,
+} from '@mui/material/LinearProgress'
 
 let cancelAxioToken: CancelTokenSource
 
@@ -11,6 +14,24 @@ export default function Download() {
    const [modalMessage, setModalMessage] = useState('')
    const [downloading, setDownloading] = useState(false)
    const { query }: NextRouter = useRouter()
+
+   function LinearProgressWithLabel(
+      props: LinearProgressProps & { value: number }
+   ) {
+      return (
+         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+               <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+               <Typography
+                  variant="body2"
+                  color="text.secondary"
+               >{`${Math.round(props.value)}%`}</Typography>
+            </Box>
+         </Box>
+      )
+   }
 
    function onDownloadProgress(event: ProgressEvent) {
       setProgress(Math.round((99 * event.loaded) / event.total))
@@ -49,9 +70,9 @@ export default function Download() {
          <Typography variant="h1">{query.id}</Typography>
          <Typography variant="h3">{modalMessage}</Typography>
          <Typography variant="h2">Name:{query.name}</Typography>
-         <LinearProgress value={progress} />
+         <LinearProgressWithLabel value={progress} />
          <Button onClick={download}>Download</Button>
-         <Button onClick={cancelDownload}>Download</Button>
+         <Button onClick={cancelDownload}>cancel Download</Button>
          <Button></Button>
       </Box>
    )
