@@ -6,6 +6,9 @@
    display: var(--webkit-text-track-display) !important;
 }
 
+.plyr--full-ui .plyr__caption {
+   font-size: 4vmin !important;
+}
 @media (--tablet) {
    .plyr--full-ui ::-webkit-media-text-track-container {
       display: block !important;
