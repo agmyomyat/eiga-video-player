@@ -8,11 +8,13 @@ import { NextRouter, useRouter } from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 import { checkPremiumQuery } from '../../src/api/graphql-req/checkPremium'
 import { embedSubQuery2 } from '../../src/api/graphql-req/embedSub2'
+import DevDectecter from '../../src/share/devDectecter'
 import Player from '../../src/components/player'
 export default function Embed(props: any) {
    console.log('props is ', props)
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
+   DevDectecter()
    useEffect(() => {
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)

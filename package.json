@@ -17,6 +17,7 @@
       "@mui/material": "^5.0.3",
       "@mui/types": "^7.0.0",
       "axios": "^0.21.3",
+      "devtools-detector": "^2.0.6",
       "formik": "^2.2.9",
       "graphql": "^15.5.3",
       "graphql-request": "^3.5.0",
