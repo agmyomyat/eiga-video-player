@@ -9,9 +9,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { checkPremiumQuery } from '../../src/api/graphql-req/checkPremium'
 import { embedSubQuery } from '../../src/api/graphql-req/embedSub'
 import Player from '../../src/components/player'
+import DevDectecter from '../../src/share/devDectecter'
 export default function Embed(props: any) {
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
+   DevDectecter()
    const plyrConfig = {
       type: 'video',
       title: 'Example title',
@@ -31,9 +33,9 @@ export default function Embed(props: any) {
       if (router.isReady && !router.query.token) {
          console.log('props', props)
          console.log('it fucking')
-         router.replace('/404')
+         // router.replace('/404')
+         setLoading(false)
          return
-         // setLoading(false)
       }
       checkPremiumQuery(router.query.token as string)
          .then((res) => {
@@ -41,8 +43,8 @@ export default function Embed(props: any) {
             if (res.getUserData.premium) {
                return setLoading(false)
             } else {
-               // setLoading(false)
-               router.replace('/404')
+               setLoading(false)
+               // router.replace('/404')
                return
             }
          })
