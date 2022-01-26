@@ -13,7 +13,7 @@ import DevDectecter from '../../src/share/devDectecter'
 export default function Embed(props: any) {
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
-   DevDectecter()
+   // DevDectecter()
    const plyrConfig = {
       type: 'video',
       title: 'Example title',
