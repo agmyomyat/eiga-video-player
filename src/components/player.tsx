@@ -73,18 +73,15 @@ export default function Player({
 
          player.once('playing', (e: any) => {
             console.log('top', window.top)
+            if (router.query.ct) {
+               player.currentTime = JSON.parse(router.query.ct as string)
+            }
             setInterval(function () {
                window.top?.postMessage(
                   JSON.stringify(player.currentTime),
                   'https://rosestream.watch'
                )
             }, 10000)
-         })
-
-         player.once('playing', (e: any) => {
-            player.currentTime = router.query.ct
-               ? JSON.parse(router.query.ct as string)
-               : 0
          })
       }, [])
 
