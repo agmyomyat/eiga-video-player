@@ -4,6 +4,8 @@ import OnPlayerModal from './onPlayerModal'
 import axios, { CancelTokenSource } from 'axios'
 import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
+import { useRouter } from 'next/router'
+import { WindowRounded } from '@mui/icons-material'
 let cancelAxioToken: CancelTokenSource
 
 export default function Player({
@@ -20,6 +22,7 @@ export default function Player({
    const [progress, setProgress] = React.useState(0)
    const [modalMessage, setModalMessage] = React.useState('')
    const [downloading, setDownloading] = React.useState(false)
+   const router = useRouter()
 
    React.useEffect(() => {
       const myVideo = document.querySelector('video')
@@ -66,48 +69,23 @@ export default function Player({
             captions: { active: true },
             storage: { enabled: false, key: 'plyrPlayer' },
          })
-         // player.on('pause', (e: any) => {
-         //    console.log(' player pause', e)
-         //    setOpen(true)
-         // })
-         // player.on('seeking', (e: any) => {
-         //    console.log(' player seeking', e)
-         //    setOpen(false)
-         // })
-         // player.on('playing', (e: any) => {
-         //    console.log(' player playing', e)
-         //    setOpen(false)
-         // })
-
-         player.on('error', (e: any) => {
-            console.log('player occuring error', e)
-         })
          player.source = config
-         // player.source = {
-         //    type: 'video',
-         //    title: 'Example title',
-         //    sources: [
-         //       {
-         //          src: `${server_url}/${uuid}.mp4`,
-         //          type: 'video/mp4',
-         //          size: 1080,
-         //       },
-         //    ],
-         //    tracks: [
-         //       {
-         //          kind: 'captions',
-         //          label: 'Burmese',
-         //          srclang: 'mm',
-         //          src: `${process.env.EMBED_URL}/mm_vtt/${mmTextTrack}.vtt`,
-         //       },
-         //       {
-         //          kind: 'captions',
-         //          label: 'English',
-         //          srclang: 'en',
-         //          src: `${process.env.EMBED_URL}/vtt/${textTrack}.vtt`,
-         //       },
-         //    ],
-         // }
+
+         player.once('playing', (e: any) => {
+            console.log('top', window.top)
+            setInterval(function () {
+               window.top?.postMessage(
+                  JSON.stringify(player.currentTime),
+                  'https://rosestream.watch'
+               )
+            }, 10000)
+         })
+
+         player.once('playing', (e: any) => {
+            player.currentTime = router.query.ct
+               ? JSON.parse(router.query.ct as string)
+               : 0
+         })
       }, [])
 
       return (
