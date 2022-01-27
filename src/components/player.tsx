@@ -72,15 +72,23 @@ export default function Player({
          player.source = config
 
          player.once('playing', (e: any) => {
+            let _duration = player.currentTime
             console.log('top', window.top)
             if (router.query.ct) {
                player.currentTime = JSON.parse(router.query.ct as string)
             }
             setInterval(function () {
-               window.top?.postMessage(
-                  JSON.stringify(player.currentTime),
-                  'https://rosestream.watch'
-               )
+               const _current_time = player.currentTime
+               if (
+                  _current_time > _duration + 10 ||
+                  _current_time < _duration - 10
+               ) {
+                  _duration = player.currentTime
+                  window.top?.postMessage(
+                     JSON.stringify(player.currentTime),
+                     'https://rosestream.watch'
+                  )
+               }
             }, 10000)
          })
       }, [])
