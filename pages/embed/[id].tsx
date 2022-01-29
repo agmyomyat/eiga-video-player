@@ -14,7 +14,7 @@ export default function Embed(props: any) {
    console.log('props is ', props)
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
-   // DevDectecter()
+   DevDectecter()
    useEffect(() => {
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
