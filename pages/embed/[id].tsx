@@ -19,8 +19,6 @@ export default function Embed(props: any) {
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
       if (router.isReady && !router.query.token) {
-         console.log('props', props)
-         console.log('it fucking')
          router.replace('/404')
          // setLoading(false)
       }
@@ -84,6 +82,7 @@ export async function getStaticProps({ params }: any) {
             label: 'English',
             srclang: 'en',
             src: `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+            // src: `${process.env.EMBED_URL}/vtt/Toy.Story.3.2010.BrRip.x264.720p.YIFY.vtt`,
          },
       ],
    }

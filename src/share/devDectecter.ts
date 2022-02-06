@@ -5,7 +5,7 @@ export default function DevDectecter() {
    useEffect(() => {
       addListener(
          (isOpen) =>
-            isOpen && (window.location.href = 'https://rosestream.watch/404')
+            isOpen && (window.location.href = 'https://embed.eiga.sbs/404')
       )
       // 2. launch detect
       launch()
