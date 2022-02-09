@@ -5,6 +5,7 @@ module.exports = {
       API_URL: process.env.API_URL,
       EMBED_URL: process.env.EMBED_URL,
       ENG_EMBED_URL: process.env.ENG_EMBED_URL,
+      HLS_URL: process.env.HLS_URL,
    },
    async headers() {
       return [

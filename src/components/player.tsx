@@ -6,6 +6,7 @@ import fileDownload from 'js-file-download'
 import { Box } from '@mui/material'
 import { useRouter } from 'next/router'
 import { WindowRounded } from '@mui/icons-material'
+import Hls from 'hls.js'
 let cancelAxioToken: CancelTokenSource
 
 export default function Player({
@@ -27,6 +28,7 @@ export default function Player({
    React.useEffect(() => {
       const myVideo = document.querySelector('video')
       if (!myVideo) return
+      console.log('video element', myVideo)
       myVideo.addEventListener('webkitbeginfullscreen', () => {
          document.documentElement.style.setProperty(
             '--webkit-text-track-display',
@@ -70,7 +72,28 @@ export default function Player({
             storage: { enabled: false, key: 'plyrPlayer' },
          })
          player.source = config
+         player.once('ready', function (event: any) {
+            let instance = event.detail.plyr
 
+            let hslSource = null
+            let sources = instance.media.querySelectorAll('source'),
+               i
+            for (i = 0; i < sources.length; ++i) {
+               if (sources[i].src.indexOf('.m3u8') > -1) {
+                  hslSource = sources[i].src
+               }
+            }
+
+            if (hslSource !== null && Hls.isSupported()) {
+               let hls = new Hls({
+                  // maxBufferSize: 2 * 1000 * 1000,
+                  maxBufferLength: 10,
+                  maxMaxBufferLength: 10,
+               })
+               hls.loadSource(hslSource)
+               hls.attachMedia(instance.media)
+            }
+         })
          player.once('playing', (e: any) => {
             let _duration = player.currentTime
             console.log('top', window.top)
