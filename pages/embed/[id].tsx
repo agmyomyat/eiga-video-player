@@ -10,17 +10,18 @@ import { checkPremiumQuery } from '../../src/api/graphql-req/checkPremium'
 import { embedSubQuery2 } from '../../src/api/graphql-req/embedSub2'
 import DevDectecter from '../../src/share/devDectecter'
 import Player from '../../src/components/player'
+import { GetServerSideProps } from 'next'
 export default function Embed(props: any) {
-   console.log('props is ', props)
+   // console.log('props is ', props)
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
-   DevDectecter()
+   // DevDectecter()
    useEffect(() => {
       if (!router.isReady || router.isFallback) return
       console.log('router readey', router.isReady)
       if (router.isReady && !router.query.token) {
-         router.replace('/404')
-         // setLoading(false)
+         // router.replace('/404')
+         setLoading(false)
       }
       checkPremiumQuery(router.query.token as string)
          .then((res) => {
@@ -28,14 +29,14 @@ export default function Embed(props: any) {
             if (res.getUserData.premium) {
                return setLoading(false)
             } else {
-               // setLoading(false)
-               router.replace('/404')
+               setLoading(false)
+               // router.replace('/404')
                return
             }
          })
          .catch((e) => {
             console.log(e.message)
-            router.replace('/404')
+            // router.replace('/404')
          })
    }, [router])
 
@@ -52,43 +53,46 @@ export default function Embed(props: any) {
       </div>
    )
 }
-export async function getStaticPaths() {
-   return {
-      paths: [],
-      fallback: true,
-   }
-}
-export async function getStaticProps({ params }: any) {
-   // params contains the post `id`.
-   // If the route is like /posts/1, then params.id is 1
-
-   // Pass post data to the page via props
-   const res = await embedSubQuery2({ embedLink: params.id })
+// export async function getStaticPaths() {
+//    return {
+//       paths: [],
+//       fallback: true,
+//    }
+// }
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+   const res = await embedSubQuery2({ embedLink: query.id as string })
+   console.log('apple', res)
    const plyrConfig = {
       type: 'video',
-      title: 'Example title',
+      title: 'RoseStream',
       sources: [
          {
-            src: `${process.env.ENG_EMBED_URL as string}/${
-               params.id as string
-            }.mp4`,
+            src: query.hls
+               ? `${process.env.HLS_URL}/${query.id}/playlist.m3u8`
+               : `${process.env.ENG_EMBED_URL as string}/${
+                    query.id as string
+                 }.mp4`,
             type: 'video/mp4',
             size: 1080,
          },
       ],
-      tracks: [
-         {
-            kind: 'captions',
-            label: 'English',
-            srclang: 'en',
-            src: `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
-            // src: `${process.env.EMBED_URL}/vtt/Toy.Story.3.2010.BrRip.x264.720p.YIFY.vtt`,
-         },
-      ],
+      tracks:
+         query.hls || res?.embedVideo2s[0]?.eng_sub
+            ? [
+                 {
+                    kind: 'captions',
+                    label: 'English',
+                    srclang: 'en',
+                    src: query.hls
+                       ? `${process.env.HLS_URL}/${query.id}/captions/EN.vtt`
+                       : `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+                    // src: `${process.env.EMBED_URL}/vtt/Toy.Story.3.2010.BrRip.x264.720p.YIFY.vtt`,
+                 },
+              ]
+            : [],
    }
    return {
-      props: { params, videoData: res, plyrConfig: plyrConfig },
-      revalidate: 10, // In seconds
+      props: { params: query, videoData: res, plyrConfig: plyrConfig },
    }
 }
 function FacebookCircularProgress(props: CircularProgressProps) {
