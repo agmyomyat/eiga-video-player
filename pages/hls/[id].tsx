@@ -10,7 +10,7 @@ export default function Hls(props: any) {
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(false)
    // DevDectecter()
-   //    useCheckPremium({ setLoading })
+   useCheckPremium({ setLoading })
    if (router.isFallback || loading) return <FacebookCircularProgress />
    return (
       <div>
