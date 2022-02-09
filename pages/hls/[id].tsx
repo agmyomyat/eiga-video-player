@@ -1,17 +1,16 @@
 import { NextRouter, useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { embedSubQuery2 } from '../../src/api/graphql-req/embedSub2'
 import DevDectecter from '../../src/share/devDectecter'
 import Player from '../../src/components/player'
 import { GetStaticProps } from 'next'
 import useCheckPremium from '../../src/custom-hooks/checkPremium'
 import FacebookCircularProgress from '../../src/components/circularLoading'
-export default function Embed(props: any) {
+export default function Hls(props: any) {
    // console.log('props is ', props)
    const router: NextRouter = useRouter()
-   const [loading, setLoading] = useState(true)
+   const [loading, setLoading] = useState(false)
    // DevDectecter()
-   useCheckPremium({ setLoading })
+   //    useCheckPremium({ setLoading })
    if (router.isFallback || loading) return <FacebookCircularProgress />
    return (
       <div>
@@ -32,18 +31,14 @@ export async function getStaticPaths() {
    }
 }
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-   const res = await embedSubQuery2({ embedLink: params!.id as string })
-   console.log('apple', res)
    const plyrConfig = {
       type: 'video',
       title: 'RoseStream',
       sources: [
          {
-            src: `${process.env.ENG_EMBED_URL as string}/${
+            src: `${process.env.HLS_URL as string}/${
                params!.id as string
-            }.mp4`,
-            type: 'video/mp4',
-            size: 1080,
+            }/playlist.m3u8`,
          },
       ],
       tracks: [
@@ -51,12 +46,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             kind: 'captions',
             label: 'English',
             srclang: 'en',
-            src: `${process.env.EMBED_URL}/vtt/${res?.embedVideo2s[0]?.eng_sub}.vtt`,
+            src: `${process.env.HLS_URL}/${params!.id}/captions/EN.vtt`,
             // src: `${process.env.EMBED_URL}/vtt/Toy.Story.3.2010.BrRip.x264.720p.YIFY.vtt`,
          },
       ],
    }
    return {
-      props: { params, plyrConfig: plyrConfig },
+      props: { params, plyrConfig },
+      revalidate: 5,
    }
 }

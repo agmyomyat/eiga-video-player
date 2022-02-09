@@ -66,7 +66,6 @@ export default function Player({
                'airplay', // Airplay (currently Safari only)
                'fullscreen', // Toggle fullscreen
             ],
-            settings: ['captions', 'quality'],
             fullscreen: { iosNative: true },
             captions: { active: true },
             storage: { enabled: false, key: 'plyrPlayer' },
