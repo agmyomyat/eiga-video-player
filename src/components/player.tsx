@@ -28,6 +28,7 @@ export default function Player({
    React.useEffect(() => {
       const myVideo = document.querySelector('video')
       if (!myVideo) return
+      console.log('video element', myVideo)
       myVideo.addEventListener('webkitbeginfullscreen', () => {
          document.documentElement.style.setProperty(
             '--webkit-text-track-display',
@@ -70,8 +71,8 @@ export default function Player({
             captions: { active: true },
             storage: { enabled: false, key: 'plyrPlayer' },
          })
+         player.source = config
          player.once('ready', function (event: any) {
-            player.source = config
             let instance = event.detail.plyr
 
             let hslSource = null

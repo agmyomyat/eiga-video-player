@@ -8,7 +8,7 @@ import FacebookCircularProgress from '../../src/components/circularLoading'
 export default function Hls(props: any) {
    // console.log('props is ', props)
    const router: NextRouter = useRouter()
-   const [loading, setLoading] = useState(false)
+   const [loading, setLoading] = useState(true)
    // DevDectecter()
    useCheckPremium({ setLoading })
    if (router.isFallback || loading) return <FacebookCircularProgress />
