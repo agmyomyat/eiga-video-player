@@ -203,7 +203,7 @@ export default function InteractiveList() {
                               <IconButton
                                  onClick={() => {
                                     let text = `Do you really wanna delete ${
-                                       server2 ? v.embedLink : v.eigaLink
+                                       server2 ? v.movie_name : v.movieName
                                     }`
                                     if (confirm(text) == true) {
                                        handleDelete(
