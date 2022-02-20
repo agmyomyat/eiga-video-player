@@ -10,7 +10,7 @@ export default function Embed(props: any) {
    // console.log('props is ', props)
    const router: NextRouter = useRouter()
    const [loading, setLoading] = useState(true)
-   // DevDectecter()
+   DevDectecter()
    useCheckPremium({ setLoading })
    if (router.isFallback || loading) return <FacebookCircularProgress />
    return (
