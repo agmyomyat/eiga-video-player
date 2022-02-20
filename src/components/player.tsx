@@ -118,6 +118,7 @@ export default function Player({
 
       return (
          <video
+            preload="metadata"
             className="plyr__video-embed"
             id="plyrPlayer"
             crossOrigin=""
