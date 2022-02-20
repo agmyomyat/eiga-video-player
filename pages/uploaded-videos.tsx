@@ -201,15 +201,20 @@ export default function InteractiveList() {
                            key={v.id}
                            secondaryAction={
                               <IconButton
-                                 onClick={() =>
-                                    handleDelete(
-                                       server2 ? v.embedLink : v.eigaLink,
-                                       server2
-                                          ? v.upload_status
-                                          : v.uploadStatus,
-                                       v.id
-                                    )
-                                 }
+                                 onClick={() => {
+                                    let text = `Do you really wanna delete ${
+                                       server2 ? v.embedLink : v.eigaLink
+                                    }`
+                                    if (confirm(text) == true) {
+                                       handleDelete(
+                                          server2 ? v.embedLink : v.eigaLink,
+                                          server2
+                                             ? v.upload_status
+                                             : v.uploadStatus,
+                                          v.id
+                                       )
+                                    }
+                                 }}
                                  edge="end"
                                  aria-label="delete"
                               >
