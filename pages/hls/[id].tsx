@@ -46,7 +46,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             kind: 'captions',
             label: 'English',
             srclang: 'en',
-            src: `${process.env.HLS_URL}/${params!.id}/captions/EN.vtt`,
+            src: `https://lb-bdn.rosestream.watch/${
+               params!.id
+            }/captions/EN.vtt`,
             // src: `${process.env.EMBED_URL}/vtt/Toy.Story.3.2010.BrRip.x264.720p.YIFY.vtt`,
          },
       ],
