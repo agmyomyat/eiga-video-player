@@ -109,7 +109,7 @@ export default function Player({
                   _duration = player.currentTime
                   window.top?.postMessage(
                      JSON.stringify(player.currentTime),
-                     'https://rosestream.watch'
+                     'https://www.kasset.org'
                   )
                }
             }, 10000)
