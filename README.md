@@ -15,4 +15,4 @@ I separate video player from eiga because at that time i was inspired by some of
 
 ## License
 
-the project is no longer active. so there is no license just you can browsed around, learn or fork. just do whatever you want
+the project is no longer active. so there is no license just you can browse around, learn or fork. just do whatever you want
